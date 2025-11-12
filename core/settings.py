@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'accounts',
     'contacts',
     'leads',
+    'profiles',
     'reports',
     'tasks',
     'users',

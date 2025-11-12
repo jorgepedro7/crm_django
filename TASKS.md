@@ -19,18 +19,18 @@
   - [X] Em core/views.py, criar TemplateView para home pública com links para login/signup.
   - [X] Template home.html com hero gradiente e chamadas para ação.
 
-### Sprint 2: Perfis e Dashboard Básico (Semana 3)
-- [ ] Modelo Profile
-  - [ ] Em profiles/models.py, criar Profile com OneToOneField para User, full_name, photo.
-  - [ ] Adicionar created_at/updated_at via mixin ou auto_now.
-  - [ ] Makemigrations e migrate para profiles.
-- [ ] Signal para criar Profile automático
-  - [ ] Em profiles/signals.py, post_save para User criando Profile.
-  - [ ] Em profiles/apps.py, importar signals em ready().
-- [ ] Dashboard View
-  - [ ] Em core/views.py, LoginRequiredMixin + TemplateView para /dashboard/.
-  - [ ] Template dashboard.html com grid Tailwind, seções para leads, conversões e gráficos interativos.
-  - [ ] Adicionar menu sidebar com links para seções futuras.
+### Sprint 2: Perfis e Dashboard Básico (Semana 3) [X]
+- [X] Modelo Profile
+  - [X] Em profiles/models.py, criar Profile com OneToOneField para User, full_name, photo.
+  - [X] Adicionar created_at/updated_at via mixin ou auto_now.
+  - [X] Makemigrations e migrate para profiles.
+- [X] Signal para criar Profile automático
+  - [X] Em profiles/signals.py, post_save para User criando Profile.
+  - [X] Em profiles/apps.py, importar signals em ready().
+- [X] Dashboard View
+  - [X] Em core/views.py, LoginRequiredMixin + TemplateView para /dashboard/.
+  - [X] Template dashboard.html com grid Tailwind, seções para leads, conversões e gráficos interativos.
+  - [X] Adicionar menu sidebar com links para seções futuras.
 
 ### Sprint 3: Contas (Semana 4)
 - [ ] Modelo Account
