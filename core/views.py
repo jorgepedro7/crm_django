@@ -1,6 +1,8 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import TemplateView
 
+from accounts.models import Account
+
 
 class HomePageView(TemplateView):
     template_name = 'home.html'
@@ -12,8 +14,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
+        accounts_total = Account.objects.filter(owner=self.request.user).count()
         context.update(
             {
+                'accounts_total': accounts_total,
                 'headline_metrics': [
                     {
                         'label': 'Leads ativos',

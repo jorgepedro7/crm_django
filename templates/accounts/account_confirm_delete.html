@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}Excluir conta • JL CRM{% endblock %}
+
+{% block content %}
+<section class="mx-auto max-w-2xl space-y-6">
+    <header class="rounded-3xl border border-rose-500/30 bg-rose-500/10 p-6 text-center shadow-lg shadow-rose-900/30">
+        <p class="text-xs uppercase tracking-[0.35em] text-rose-200">Atenção</p>
+        <h1 class="mt-2 text-3xl font-semibold text-white">Excluir conta</h1>
+        <p class="mt-2 text-sm text-rose-100/80">Esta ação não pode ser desfeita. Confirme para remover definitivamente a conta <strong>{{ object.name }}</strong>.</p>
+    </header>
+
+    <form method="post" class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-8 text-center shadow-xl shadow-black/30">
+        {% csrf_token %}
+        <p class="text-sm text-slate-400">Deseja prosseguir?</p>
+        <div class="mt-6 flex flex-wrap justify-center gap-4">
+            <button type="submit" class="rounded-full bg-gradient-to-r from-rose-500 to-amber-400 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-rose-900/40 transition hover:opacity-90">
+                Sim, excluir
+            </button>
+            <a href="{% url 'accounts:list' %}" class="rounded-full border border-slate-600 px-6 py-3 text-sm font-semibold text-slate-200 transition hover:border-indigo-400">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}

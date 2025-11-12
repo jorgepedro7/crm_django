@@ -32,20 +32,20 @@
   - [X] Template dashboard.html com grid Tailwind, seções para leads, conversões e gráficos interativos.
   - [X] Adicionar menu sidebar com links para seções futuras.
 
-### Sprint 3: Contas (Semana 4)
-- [ ] Modelo Account
-  - [ ] Em accounts/models.py, Account com ForeignKey User, name, industry, city, website.
-  - [ ] Adicionar created_at/updated_at.
-  - [ ] Makemigrations e migrate.
-- [ ] Admin para Account
-  - [ ] Em accounts/admin.py, registrar Account com list_display e filters.
-- [ ] CRUD Views para Accounts
-  - [ ] Em accounts/views.py, ListView, CreateView, UpdateView, DeleteView com LoginRequiredMixin.
-  - [ ] Forms em forms.py com ModelForm, validações.
-  - [ ] Urls em accounts/urls.py.
-  - [ ] Templates: account_list.html (tabela Tailwind), form.html genérico com inputs.
-- [ ] Integrar no Dashboard
-  - [ ] Query para total de contas em dashboard view.
+### Sprint 3: Contas (Semana 4) [X]
+- [X] Modelo Account
+  - [X] Em accounts/models.py, Account com ForeignKey User, name, industry, city, website.
+  - [X] Adicionar created_at/updated_at.
+  - [X] Makemigrations e migrate.
+- [X] Admin para Account
+  - [X] Em accounts/admin.py, registrar Account com list_display e filters.
+- [X] CRUD Views para Accounts
+  - [X] Em accounts/views.py, ListView, CreateView, UpdateView, DeleteView com LoginRequiredMixin.
+  - [X] Forms em forms.py com ModelForm, validações.
+  - [X] Urls em accounts/urls.py.
+  - [X] Templates: account_list.html (tabela Tailwind), form.html genérico com inputs.
+- [X] Integrar no Dashboard
+  - [X] Query para total de contas em dashboard view.
 
 ### Sprint 4: Contatos (Semana 5)
 - [ ] Modelo Contact

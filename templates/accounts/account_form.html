@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+{% block title %}{% if form.instance.pk %}Editar conta{% else %}Nova conta{% endif %} • JL CRM{% endblock %}
+
+{% block content %}
+<section class="space-y-6">
+    <header class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-indigo-900/30">
+        <p class="text-xs uppercase tracking-[0.35em] text-indigo-300">Contas</p>
+        <h1 class="mt-2 text-3xl font-semibold text-white">
+            {% if form.instance.pk %}Editar conta{% else %}Nova conta{% endif %}
+        </h1>
+        <p class="mt-2 text-sm text-slate-400">Preencha os dados principais da empresa para manter o relacionamento organizado.</p>
+    </header>
+
+    <form method="post" class="space-y-6 rounded-3xl border border-slate-800/70 bg-slate-900/50 p-8 shadow-xl shadow-black/40">
+        {% csrf_token %}
+        {% if form.errors %}
+            <div class="rounded-2xl border border-rose-500/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-100">
+                Verifique os campos destacados abaixo.
+            </div>
+        {% endif %}
+
+        <div class="grid gap-6 md:grid-cols-2">
+            {% for field in form %}
+                <div class="space-y-2 {% if field.name == 'name' %}md:col-span-2{% endif %}">
+                    <label for="{{ field.id_for_label }}" class="text-sm font-semibold text-slate-200">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.help_text %}
+                        <p class="text-xs text-slate-400">{{ field.help_text }}</p>
+                    {% endif %}
+                    {% for error in field.errors %}
+                        <p class="text-xs text-rose-300">{{ error }}</p>
+                    {% endfor %}
+                </div>
+            {% endfor %}
+        </div>
+
+        <div class="flex flex-wrap gap-3">
+            <button type="submit" class="rounded-full bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 px-6 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-900/40 transition hover:opacity-90">
+                {% if form.instance.pk %}Salvar alterações{% else %}Cadastrar conta{% endif %}
+            </button>
+            <a href="{% url 'accounts:list' %}" class="rounded-full border border-slate-600 px-6 py-3 text-sm font-semibold text-slate-200 transition hover:border-indigo-400">Cancelar</a>
+        </div>
+    </form>
+</section>
+{% endblock %}
