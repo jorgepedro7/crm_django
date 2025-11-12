@@ -5,11 +5,11 @@ A estrutura já contém os apps principais. Use esta referência para saber o pa
 ## Resumo rápido
 | App | Responsabilidade | Situação atual |
 | --- | --- | --- |
-| `core` | Configurações, URLs globais, views utilitárias (home pública, dashboard, relatórios). | Projeto criado; apenas rota do admin configurada até o momento. |
-| `users` | Customização do modelo de usuário baseado em e-mail, views de login/signup/logout e perfis. | Modelos ainda não implementados; PRD pede `AbstractUser` com `USERNAME_FIELD='email'`. |
-| `accounts` | Cadastros de empresas/organizações e ligação com leads/contatos. | Apenas estrutura vazia; aguardando modelos e CRUD. |
+| `core` | Configurações, URLs globais, views utilitárias (home pública, dashboard, relatórios). | Home pública e dashboard autenticado publicados. |
+| `users` | Customização do modelo de usuário baseado em e-mail, views de login/signup/logout e perfis. | Modelo custom e autenticação finalizados. |
+| `accounts` | Cadastros de empresas/organizações e ligação com leads/contatos. | Modelo, admin e CRUD ativos no sistema. |
 | `contacts` | Pessoas ligadas a contas (nome, email, telefone, cargo). | Modelo, admin e CRUD concluídos. |
-| `leads` | Pipeline de leads, etapas e conversão para contas/contatos. | Estrutura vazia; PRD define campos e fluxos abaixo. |
+| `leads` | Pipeline de leads, etapas e conversão para contas/contatos. | Modelo, admin, CRUD e fluxo de conversão entregues. |
 | `tasks` | Atividades vinculadas a leads/contatos, incluindo status e due date. | Estrutura vazia. |
 | `reports` | Telas de filtros por período e agregações simples. | Estrutura vazia. |
 

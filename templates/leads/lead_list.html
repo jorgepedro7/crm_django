@@ -1,0 +1,119 @@
+{% extends 'base.html' %}
+{% block title %}Leads • JL CRM{% endblock %}
+
+{% block content %}
+<section class="space-y-6">
+    <header class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-indigo-900/30">
+        <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+                <p class="text-xs uppercase tracking-[0.35em] text-indigo-300">Pipeline</p>
+                <h1 class="mt-2 text-3xl font-semibold text-white">Leads</h1>
+                <p class="mt-1 text-sm text-slate-400">Acompanhe oportunidades por origem e status e converta em contas com um clique.</p>
+            </div>
+            <a href="{% url 'leads:create' %}" class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-800/40 transition hover:opacity-90">
+                Novo lead
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v12m6-6H6" />
+                </svg>
+            </a>
+        </div>
+        <form method="get" class="mt-6 grid gap-3 md:grid-cols-4">
+            <input type="text" name="q" value="{{ request.GET.q|default_if_none:'' }}" placeholder="Busque por nome, e-mail ou conta" class="rounded-xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder-slate-500 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/30 md:col-span-2">
+            <select name="status" class="rounded-xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-slate-100 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/30">
+                <option value="">Todos os status</option>
+                {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if value == selected_status %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <select name="source" class="rounded-xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-slate-100 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/30">
+                <option value="">Todas as origens</option>
+                {% for value, label in source_choices %}
+                    <option value="{{ value }}" {% if value == selected_source %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="rounded-xl border border-indigo-400/60 px-4 py-3 text-sm font-semibold text-indigo-200 transition hover:bg-indigo-500/20">Filtrar</button>
+        </form>
+    </header>
+
+    {% if leads %}
+        <div class="overflow-hidden rounded-3xl border border-slate-800/70 bg-slate-900/50 shadow-xl shadow-black/30">
+            <table class="min-w-full divide-y divide-slate-800 text-sm">
+                <thead class="bg-slate-950/40 text-slate-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-4 text-left font-medium">Lead</th>
+                        <th scope="col" class="px-6 py-4 text-left font-medium">Conta</th>
+                        <th scope="col" class="px-6 py-4 text-left font-medium">Origem</th>
+                        <th scope="col" class="px-6 py-4 text-left font-medium">Status</th>
+                        <th scope="col" class="px-6 py-4 text-left font-medium">Atualizado</th>
+                        <th scope="col" class="px-6 py-4 text-right font-medium">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800 text-slate-200">
+                    {% for lead in leads %}
+                        <tr class="hover:bg-slate-900/80">
+                            <td class="px-6 py-4">
+                                <p class="font-semibold text-white">{{ lead.name }}</p>
+                                <p class="text-xs text-slate-400">{{ lead.email }}</p>
+                                {% if lead.contact %}
+                                    <p class="text-xs text-slate-500">Contato vinculado: {{ lead.contact.name }}</p>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4">
+                                {% if lead.account %}
+                                    <p class="text-white">{{ lead.account.name }}</p>
+                                {% else %}
+                                    <span class="text-xs text-slate-500">Sem conta</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center rounded-full border border-slate-700 px-3 py-1 text-xs text-slate-200">
+                                    {{ lead.get_source_display }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold {% if lead.status == 'convertido' %}border border-emerald-400/60 text-emerald-200 bg-emerald-500/10{% elif lead.status == 'perdido' %}border border-rose-400/60 text-rose-200 bg-rose-500/10{% else %}border border-indigo-400/40 text-indigo-100 bg-indigo-500/10{% endif %}">
+                                    {{ lead.get_status_display }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm text-slate-400">{{ lead.updated_at|date:'d/m/Y H:i' }}</td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="inline-flex flex-wrap justify-end gap-2">
+                                    {% if lead.status != 'convertido' %}
+                                        <form method="post" action="{% url 'leads:convert' lead.pk %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="rounded-full border border-emerald-400/60 px-3 py-1 text-xs font-semibold text-emerald-200 transition hover:bg-emerald-500/20">Converter</button>
+                                        </form>
+                                    {% endif %}
+                                    <a href="{% url 'leads:update' lead.pk %}" class="rounded-full border border-slate-700 px-3 py-1 text-xs font-semibold text-slate-200 transition hover:border-indigo-400">Editar</a>
+                                    <a href="{% url 'leads:delete' lead.pk %}" class="rounded-full border border-rose-500/50 px-3 py-1 text-xs font-semibold text-rose-200 transition hover:bg-rose-500/20">Excluir</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if is_paginated %}
+            <div class="flex items-center justify-between text-sm text-slate-400">
+                <p>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</p>
+                <div class="flex gap-2">
+                    {% if page_obj.has_previous %}
+                        <a href="?q={{ request.GET.q|default_if_none:'' }}&status={{ request.GET.status|default_if_none:'' }}&source={{ request.GET.source|default_if_none:'' }}&page={{ page_obj.previous_page_number }}" class="rounded-full border border-slate-700 px-3 py-1 transition hover:border-indigo-400">Anterior</a>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?q={{ request.GET.q|default_if_none:'' }}&status={{ request.GET.status|default_if_none:'' }}&source={{ request.GET.source|default_if_none:'' }}&page={{ page_obj.next_page_number }}" class="rounded-full border border-slate-700 px-3 py-1 transition hover:border-indigo-400">Próxima</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="rounded-3xl border border-dashed border-slate-700 bg-slate-900/40 p-10 text-center text-slate-400">
+            <p class="text-lg font-semibold text-white">Nenhum lead cadastrado</p>
+            <p class="mt-2">Capture oportunidades e acompanhe próximos passos por estágio.</p>
+            <a href="{% url 'leads:create' %}" class="mt-6 inline-flex items-center gap-2 rounded-full border border-indigo-400/60 px-6 py-3 text-sm font-semibold text-indigo-100 transition hover:bg-indigo-500/20">
+                + Criar lead
+            </a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

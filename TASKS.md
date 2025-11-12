@@ -59,22 +59,22 @@
   - [X] Template com vinculação a conta via dropdown.
 - [X] Sidebar link para /contacts/.
 
-### Sprint 5: Leads e Pipeline (Semana 6)
-- [ ] Modelo Lead
-  - [ ] Em leads/models.py, Lead com FKs para User/Account/Contact (opcionais), name, email, phone, source, status.
-  - [ ] created_at/updated_at.
-  - [ ] Makemigrations e migrate.
-- [ ] Admin para Lead
-  - [ ] Registrar com inline para Account/Contact.
-- [ ] CRUD Views
-  - [ ] ListView com filtro por status e origem; Create/Update/Delete.
-  - [ ] Form com choices populados para status (novo, qualificado, convertido, perdido).
-- [ ] Conversão de Lead
-  - [ ] Botão "Converter" que cria Account e Contact a partir do Lead.
-  - [ ] Signal para mudar status Lead para "convertido".
-- [ ] Integrar no Dashboard
-  - [ ] Query para total de leads e últimas 10 conversões.
-  - [ ] Gráfico de funil por estágio.
+### Sprint 5: Leads e Pipeline (Semana 6) [X]
+- [X] Modelo Lead
+  - [X] Em leads/models.py, Lead com FKs para User/Account/Contact (opcionais), name, email, phone, source, status.
+  - [X] created_at/updated_at.
+  - [X] Makemigrations e migrate.
+- [X] Admin para Lead
+  - [X] Registrar com inline para Account/Contact.
+- [X] CRUD Views
+  - [X] ListView com filtro por status e origem; Create/Update/Delete.
+  - [X] Form com choices populados para status (novo, qualificado, convertido, perdido).
+- [X] Conversão de Lead
+  - [X] Botão "Converter" que cria Account e Contact a partir do Lead.
+  - [X] Signal para mudar status Lead para "convertido".
+- [X] Integrar no Dashboard
+  - [X] Query para total de leads e últimas 10 conversões.
+  - [X] Gráfico de funil por estágio.
 
 ### Sprint 6: Tarefas (Semana 7)
 - [ ] Modelo Task

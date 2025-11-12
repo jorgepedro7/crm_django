@@ -1,9 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.db.models import Count
 from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 
 from accounts.models import Account
 from contacts.models import Contact
+from leads.models import Lead
 
 
 class HomePageView(TemplateView):
@@ -16,12 +18,52 @@ class DashboardView(LoginRequiredMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        accounts_total = Account.objects.filter(owner=self.request.user).count()
-        contacts_total = Contact.objects.filter(owner=self.request.user).count()
+        user = self.request.user
+        accounts_total = Account.objects.filter(owner=user).count()
+        contacts_total = Contact.objects.filter(owner=user).count()
+        leads_total = Lead.objects.filter(owner=user).count()
+        status_totals = (
+            Lead.objects.filter(owner=user)
+            .values('status')
+            .annotate(total=Count('id'))
+        )
+        status_map = {item['status']: item['total'] for item in status_totals}
+        status_palette = {
+            Lead.Status.NEW: 'bg-cyan-400',
+            Lead.Status.QUALIFIED: 'bg-indigo-400',
+            Lead.Status.CONVERTED: 'bg-emerald-400',
+            Lead.Status.LOST: 'bg-rose-400',
+        }
+        status_labels = {
+            Lead.Status.NEW: 'Novos',
+            Lead.Status.QUALIFIED: 'Qualificados',
+            Lead.Status.CONVERTED: 'Convertidos',
+            Lead.Status.LOST: 'Perdidos',
+        }
+        pipeline_steps = []
+        for status_value in Lead.Status.values:
+            step_count = status_map.get(status_value, 0)
+            percent = int((step_count / leads_total) * 100) if leads_total else 0
+            pipeline_steps.append(
+                {
+                    'name': status_labels.get(status_value, status_value.title()),
+                    'count': step_count,
+                    'color': status_palette.get(status_value, 'bg-slate-500'),
+                    'percent': percent,
+                }
+            )
+        recent_conversions = (
+            Lead.objects.filter(owner=user, status=Lead.Status.CONVERTED)
+            .select_related('account')
+            .order_by('-updated_at')[:10]
+        )
         context.update(
             {
                 'accounts_total': accounts_total,
                 'contacts_total': contacts_total,
+                'leads_total': leads_total,
+                'recent_conversions': recent_conversions,
+                'pipeline_steps': pipeline_steps,
                 'headline_metrics': [
                     {
                         'label': 'Leads ativos',
@@ -39,36 +81,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                         'trend': '3 atrasados',
                     },
                 ],
-                'pipeline_steps': [
-                    {
-                        'name': 'Novos',
-                        'count': 12,
-                        'color': 'bg-cyan-400',
-                        'percent': 80,
-                    },
-                    {
-                        'name': 'Qualificados',
-                        'count': 9,
-                        'color': 'bg-indigo-400',
-                        'percent': 65,
-                    },
-                    {
-                        'name': 'Propostas',
-                        'count': 6,
-                        'color': 'bg-purple-400',
-                        'percent': 45,
-                    },
-                    {
-                        'name': 'Ganhamos',
-                        'count': 3,
-                        'color': 'bg-emerald-400',
-                        'percent': 30,
-                    },
-                ],
                 'quick_links': [
-                    {'label': 'Contas', 'href': '#accounts'},
+                    {'label': 'Leads', 'href': reverse_lazy('leads:list')},
+                    {'label': 'Contas', 'href': reverse_lazy('accounts:list')},
                     {'label': 'Contatos', 'href': reverse_lazy('contacts:list')},
-                    {'label': 'Leads', 'href': '#leads'},
                     {'label': 'Tarefas', 'href': '#tasks'},
                     {'label': 'Relatórios', 'href': '#reports'},
                 ],

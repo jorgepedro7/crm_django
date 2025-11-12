@@ -115,6 +115,17 @@
             <div id="reports" class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6">
                 <h2 class="text-xl font-semibold text-white">Insights rápidos</h2>
                 <div class="mt-6 grid gap-4 text-sm text-slate-300">
+                    <div id="leads-summary" class="rounded-2xl border border-slate-800/70 bg-slate-950/40 p-4">
+                        <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Leads</p>
+                        <p class="mt-3 text-4xl font-semibold text-white">{{ leads_total }}</p>
+                        <p class="mt-1 text-sm text-slate-400">Total de oportunidades em acompanhamento.</p>
+                        <a href="{% url 'leads:list' %}" class="mt-4 inline-flex items-center gap-2 text-xs font-semibold text-indigo-300 underline decoration-dotted hover:text-indigo-200">
+                            Ver leads
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-3.5 w-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M9 5l7 7-7 7" />
+                            </svg>
+                        </a>
+                    </div>
                     <div id="accounts" class="rounded-2xl border border-slate-800/70 bg-slate-950/40 p-4">
                         <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Contas</p>
                         <p class="mt-3 text-4xl font-semibold text-white">{{ accounts_total }}</p>
@@ -135,6 +146,32 @@
                         <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Relatórios</p>
                         <p class="mt-2 text-lg text-white">Gráficos interativos previstos para Sprint 7.</p>
                     </div>
+                </div>
+                <div class="mt-6 rounded-2xl border border-slate-800/70 bg-slate-950/40 p-4">
+                    <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Últimas conversões</p>
+                    <ul class="mt-4 space-y-3 text-sm">
+                        {% if recent_conversions %}
+                            {% for lead in recent_conversions %}
+                                <li class="flex items-center justify-between rounded-xl border border-slate-800/80 bg-slate-900/40 px-4 py-3">
+                                    <div>
+                                        <p class="font-semibold text-white">{{ lead.name }}</p>
+                                        <p class="text-xs text-slate-400">
+                                            {% if lead.account %}
+                                                Conta: {{ lead.account.name }}
+                                            {% else %}
+                                                Conta criada automaticamente
+                                            {% endif %}
+                                        </p>
+                                    </div>
+                                    <p class="text-xs text-slate-500">{{ lead.updated_at|date:'d/m H:i' }}</p>
+                                </li>
+                            {% endfor %}
+                        {% else %}
+                            <li class="rounded-xl border border-dashed border-slate-700 px-4 py-3 text-center text-slate-400">
+                                Nenhuma conversão registrada ainda.
+                            </li>
+                        {% endif %}
+                    </ul>
                 </div>
             </div>
         </div>
