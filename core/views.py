@@ -1,11 +1,13 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count
 from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views.generic import TemplateView
 
 from accounts.models import Account
 from contacts.models import Contact
 from leads.models import Lead
+from tasks.models import Task
 
 
 class HomePageView(TemplateView):
@@ -19,9 +21,22 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         user = self.request.user
+        today = timezone.localdate()
         accounts_total = Account.objects.filter(owner=user).count()
         contacts_total = Contact.objects.filter(owner=user).count()
         leads_total = Lead.objects.filter(owner=user).count()
+        tasks_qs = Task.objects.filter(owner=user)
+        tasks_total = tasks_qs.count()
+        pending_total = tasks_qs.filter(status=Task.Status.PENDING).count()
+        overdue_total = tasks_qs.filter(
+            status=Task.Status.PENDING, due_date__lt=today
+        ).count()
+        overdue_tasks = tasks_qs.filter(
+            status=Task.Status.PENDING, due_date__lt=today
+        ).order_by('due_date')[:3]
+        upcoming_tasks = tasks_qs.filter(
+            status=Task.Status.PENDING, due_date__gte=today
+        ).order_by('due_date')[:3]
         status_totals = (
             Lead.objects.filter(owner=user)
             .values('status')
@@ -62,6 +77,10 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'accounts_total': accounts_total,
                 'contacts_total': contacts_total,
                 'leads_total': leads_total,
+                'tasks_total': tasks_total,
+                'tasks_pending_total': pending_total,
+                'overdue_tasks': overdue_tasks,
+                'upcoming_tasks': upcoming_tasks,
                 'recent_conversions': recent_conversions,
                 'pipeline_steps': pipeline_steps,
                 'headline_metrics': [
@@ -76,16 +95,16 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                         'trend': '+4 pts',
                     },
                     {
-                        'label': 'Follow-ups do dia',
-                        'value': 7,
-                        'trend': '3 atrasados',
+                        'label': 'Tarefas pendentes',
+                        'value': pending_total,
+                        'trend': f'{overdue_total} vencidas',
                     },
                 ],
                 'quick_links': [
                     {'label': 'Leads', 'href': reverse_lazy('leads:list')},
                     {'label': 'Contas', 'href': reverse_lazy('accounts:list')},
                     {'label': 'Contatos', 'href': reverse_lazy('contacts:list')},
-                    {'label': 'Tarefas', 'href': '#tasks'},
+                    {'label': 'Tarefas', 'href': reverse_lazy('tasks:list')},
                     {'label': 'Relatórios', 'href': '#reports'},
                 ],
             }

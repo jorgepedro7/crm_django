@@ -1,0 +1,154 @@
+{% extends 'base.html' %}
+{% block title %}Tarefas • JL CRM{% endblock %}
+
+{% block content %}
+<section class="space-y-6">
+    <header class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-indigo-900/30">
+        <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+            <div>
+                <p class="text-xs uppercase tracking-[0.35em] text-indigo-300">Follow-ups</p>
+                <h1 class="mt-2 text-3xl font-semibold text-white">Tarefas</h1>
+                <p class="mt-1 text-sm text-slate-400">Controle pendências por status e mantenha leads e contatos atualizados.</p>
+            </div>
+            <a href="{% url 'tasks:create' %}" class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-800/40 transition hover:opacity-90">
+                Nova tarefa
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v12m6-6H6" />
+                </svg>
+            </a>
+        </div>
+        <form method="get" class="mt-6 flex flex-col gap-3 md:flex-row md:items-center">
+            <input type="text" name="q" value="{{ request.GET.q|default_if_none:'' }}" placeholder="Busque por título ou observação" class="flex-1 rounded-xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-slate-100 placeholder-slate-500 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/30">
+            <select name="status" class="rounded-xl border border-slate-700 bg-slate-950/40 px-4 py-3 text-slate-100 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/30">
+                <option value="">Todos os status</option>
+                {% for value, label in status_choices %}
+                    <option value="{{ value }}" {% if value == selected_status %}selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="rounded-xl border border-indigo-400/60 px-4 py-3 text-sm font-semibold text-indigo-200 transition hover:bg-indigo-500/20">Filtrar</button>
+        </form>
+    </header>
+
+    <div class="grid gap-4 md:grid-cols-2">
+        <div class="rounded-3xl border border-rose-500/40 bg-rose-500/10 p-6 shadow-lg shadow-rose-900/30">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.35em] text-rose-200">Vencidas</p>
+                    <h2 class="mt-2 text-2xl font-semibold text-white">{{ overdue_tasks|length }}</h2>
+                </div>
+                <span class="rounded-full border border-rose-400/70 px-3 py-1 text-xs font-semibold text-rose-100">Prioridade</span>
+            </div>
+            <ul class="mt-4 space-y-3 text-sm">
+                {% if overdue_tasks %}
+                    {% for task in overdue_tasks %}
+                        <li class="rounded-2xl border border-rose-400/40 bg-slate-950/40 px-4 py-3">
+                            <p class="font-semibold text-white">{{ task.title }}</p>
+                            <p class="text-xs text-rose-200">Venceu em {{ task.due_date|date:'d/m' }}</p>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="rounded-2xl border border-dashed border-rose-400/50 px-4 py-3 text-center text-rose-100/80">
+                        Sem atrasos 🎯
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+        <div class="rounded-3xl border border-emerald-500/30 bg-emerald-500/10 p-6 shadow-lg shadow-emerald-900/20">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-xs uppercase tracking-[0.35em] text-emerald-200">Pendentes</p>
+                    <h2 class="mt-2 text-2xl font-semibold text-white">{{ upcoming_tasks|length }}</h2>
+                </div>
+                <a href="{% url 'tasks:create' %}" class="rounded-full border border-emerald-300/70 px-3 py-1 text-xs font-semibold text-emerald-100 transition hover:bg-emerald-500/20">Criar rápida</a>
+            </div>
+            <ul class="mt-4 space-y-3 text-sm">
+                {% if upcoming_tasks %}
+                    {% for task in upcoming_tasks %}
+                        <li class="rounded-2xl border border-emerald-400/40 bg-slate-950/40 px-4 py-3">
+                            <p class="font-semibold text-white">{{ task.title }}</p>
+                            <p class="text-xs text-emerald-200">Prevista para {{ task.due_date|date:'d/m' }}</p>
+                        </li>
+                    {% endfor %}
+                {% else %}
+                    <li class="rounded-2xl border border-dashed border-emerald-400/50 px-4 py-3 text-center text-emerald-100/80">
+                        Nada planejado — aproveite para agendar!
+                    </li>
+                {% endif %}
+            </ul>
+        </div>
+    </div>
+
+    {% if tasks %}
+        <div class="overflow-hidden rounded-3xl border border-slate-800/70 bg-slate-900/50 shadow-xl shadow-black/30">
+            <table class="min-w-full divide-y divide-slate-800 text-sm">
+                <thead class="bg-slate-950/40 text-slate-400">
+                    <tr>
+                        <th scope="col" class="px-6 py-4 text-left font-medium">Título</th>
+                        <th scope="col" class="px-6 py-4 text-left font-medium">Relacionado</th>
+                        <th scope="col" class="px-6 py-4 text-left font-medium">Status</th>
+                        <th scope="col" class="px-6 py-4 text-left font-medium">Vencimento</th>
+                        <th scope="col" class="px-6 py-4 text-right font-medium">Ações</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-slate-800 text-slate-200">
+                    {% for task in tasks %}
+                        <tr class="hover:bg-slate-900/80">
+                            <td class="px-6 py-4">
+                                <p class="font-semibold text-white">{{ task.title }}</p>
+                                <p class="text-xs text-slate-400">{{ task.description|default:'—' }}</p>
+                            </td>
+                            <td class="px-6 py-4">
+                                {% if task.lead %}
+                                    <p class="text-white">Lead: {{ task.lead.name }}</p>
+                                {% elif task.contact %}
+                                    <p class="text-white">Contato: {{ task.contact.name }}</p>
+                                {% else %}
+                                    <span class="text-xs text-slate-500">Sem vínculo</span>
+                                {% endif %}
+                            </td>
+                            <td class="px-6 py-4">
+                                <span class="inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold
+                                    {% if task.status == 'pendente' %}border border-amber-400/60 text-amber-200 bg-amber-400/10
+                                    {% elif task.status == 'concluida' %}border border-emerald-400/60 text-emerald-200 bg-emerald-400/10
+                                    {% else %}border border-slate-500/60 text-slate-200 bg-slate-500/10{% endif %}">
+                                    {{ task.get_status_display }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 text-sm {% if task.is_overdue %}text-rose-300{% else %}text-slate-400{% endif %}">
+                                {{ task.due_date|date:'d/m/Y' }}
+                            </td>
+                            <td class="px-6 py-4 text-right">
+                                <div class="inline-flex gap-2">
+                                    <a href="{% url 'tasks:update' task.pk %}" class="rounded-full border border-slate-700 px-3 py-1 text-xs font-semibold text-slate-200 transition hover:border-indigo-400">Editar</a>
+                                    <a href="{% url 'tasks:delete' task.pk %}" class="rounded-full border border-rose-500/50 px-3 py-1 text-xs font-semibold text-rose-200 transition hover:bg-rose-500/20">Excluir</a>
+                                </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% if is_paginated %}
+            <div class="flex items-center justify-between text-sm text-slate-400">
+                <p>Página {{ page_obj.number }} de {{ page_obj.paginator.num_pages }}</p>
+                <div class="flex gap-2">
+                    {% if page_obj.has_previous %}
+                        <a href="?q={{ request.GET.q|default_if_none:'' }}&status={{ request.GET.status|default_if_none:'' }}&page={{ page_obj.previous_page_number }}" class="rounded-full border border-slate-700 px-3 py-1 transition hover:border-indigo-400">Anterior</a>
+                    {% endif %}
+                    {% if page_obj.has_next %}
+                        <a href="?q={{ request.GET.q|default_if_none:'' }}&status={{ request.GET.status|default_if_none:'' }}&page={{ page_obj.next_page_number }}" class="rounded-full border border-slate-700 px-3 py-1 transition hover:border-indigo-400">Próxima</a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    {% else %}
+        <div class="rounded-3xl border border-dashed border-slate-700 bg-slate-900/40 p-10 text-center text-slate-400">
+            <p class="text-lg font-semibold text-white">Nenhuma tarefa encontrada</p>
+            <p class="mt-2">Crie lembretes para acompanhar follow-ups e garantir o fechamento.</p>
+            <a href="{% url 'tasks:create' %}" class="mt-6 inline-flex items-center gap-2 rounded-full border border-indigo-400/60 px-6 py-3 text-sm font-semibold text-indigo-100 transition hover:bg-indigo-500/20">
+                + Criar tarefa
+            </a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

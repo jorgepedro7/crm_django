@@ -92,24 +92,24 @@
         </div>
 
         <div id="tasks" class="grid gap-6 lg:grid-cols-2">
-            <div class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6">
+            <div class="rounded-3xl border border-rose-500/30 bg-rose-500/5 p-6 shadow-lg shadow-rose-900/20">
                 <div class="flex items-center justify-between">
-                    <h2 class="text-xl font-semibold text-white">Tarefas prioritárias</h2>
-                    <span class="text-xs text-slate-400">Em breve</span>
+                    <h2 class="text-xl font-semibold text-white">Tarefas vencidas</h2>
+                    <span class="rounded-full border border-rose-400/60 px-3 py-1 text-xs font-semibold text-rose-100">{{ overdue_tasks|length }} em atraso</span>
                 </div>
-                <ul class="mt-6 space-y-4 text-sm text-slate-300">
-                    <li class="flex items-start gap-3">
-                        <span class="mt-1 h-2 w-2 rounded-full bg-rose-400"></span>
-                        Follow-up com Prospeção Tech - atrasado 2 dias.
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <span class="mt-1 h-2 w-2 rounded-full bg-amber-400"></span>
-                        Preparar proposta para Conta Atlas.
-                    </li>
-                    <li class="flex items-start gap-3">
-                        <span class="mt-1 h-2 w-2 rounded-full bg-emerald-400"></span>
-                        Revisar roteiro de onboarding.
-                    </li>
+                <ul class="mt-6 space-y-4 text-sm text-slate-200">
+                    {% if overdue_tasks %}
+                        {% for task in overdue_tasks %}
+                            <li class="rounded-2xl border border-rose-400/30 bg-slate-950/50 p-4">
+                                <p class="font-semibold text-white">{{ task.title }}</p>
+                                <p class="text-xs text-rose-200">Venceu em {{ task.due_date|date:'d/m' }}</p>
+                            </li>
+                        {% endfor %}
+                    {% else %}
+                        <li class="rounded-2xl border border-dashed border-rose-400/40 p-6 text-center text-rose-100/70">
+                            Nenhuma tarefa em atraso 🎯
+                        </li>
+                    {% endif %}
                 </ul>
             </div>
             <div id="reports" class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6">
@@ -141,6 +141,30 @@
                                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.2" d="M9 5l7 7-7 7" />
                             </svg>
                         </a>
+                    </div>
+                    <div class="rounded-2xl border border-slate-800/70 bg-slate-950/40 p-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Tarefas</p>
+                                <p class="mt-2 text-lg font-semibold text-white">{{ tasks_pending_total }} pendentes</p>
+                                <p class="text-sm text-slate-400">{{ tasks_total }} no total</p>
+                            </div>
+                            <a href="{% url 'tasks:create' %}" class="rounded-full border border-indigo-400/60 px-3 py-1 text-xs font-semibold text-indigo-100 transition hover:bg-indigo-500/20">+ Criar</a>
+                        </div>
+                        <ul class="mt-4 space-y-3 text-sm text-slate-300">
+                            {% if upcoming_tasks %}
+                                {% for task in upcoming_tasks %}
+                                    <li class="rounded-xl border border-slate-800/70 bg-slate-950/40 p-3">
+                                        <p class="font-semibold text-white">{{ task.title }}</p>
+                                        <p class="text-xs text-slate-400">Prevista para {{ task.due_date|date:'d/m' }}</p>
+                                    </li>
+                                {% endfor %}
+                            {% else %}
+                                <li class="rounded-xl border border-dashed border-slate-700 p-4 text-center text-slate-400">
+                                    Nenhuma tarefa pendente para os próximos dias.
+                                </li>
+                            {% endif %}
+                        </ul>
                     </div>
                     <div class="rounded-2xl border border-slate-800/70 bg-slate-950/40 p-4">
                         <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Relatórios</p>

@@ -76,19 +76,19 @@
   - [X] Query para total de leads e últimas 10 conversões.
   - [X] Gráfico de funil por estágio.
 
-### Sprint 6: Tarefas (Semana 7)
-- [ ] Modelo Task
-  - [ ] Em tasks/models.py, Task com FKs para User/Lead/Contact, title, description, due_date, status.
-  - [ ] created_at/updated_at.
-  - [ ] Makemigrations e migrate.
-- [ ] Admin para Task
-  - [ ] Registrar com filters por status e data.
-- [ ] CRUD Views
-  - [ ] ListView com filtro por status; Create/Update/Delete.
-  - [ ] Form com vinculação opcional a lead ou contato.
-- [ ] Dashboard de Tarefas
-  - [ ] Exibir tarefas vencidas e pendentes.
-  - [ ] Link para criar tarefa rápida.
+### Sprint 6: Tarefas (Semana 7) [X]
+- [X] Modelo Task
+  - [X] Em tasks/models.py, Task com FKs para User/Lead/Contact, title, description, due_date, status.
+  - [X] created_at/updated_at.
+  - [X] Makemigrations e migrate.
+- [X] Admin para Task
+  - [X] Registrar com filters por status e data.
+- [X] CRUD Views
+  - [X] ListView com filtro por status; Create/Update/Delete.
+  - [X] Form com vinculação opcional a lead ou contato.
+- [X] Dashboard de Tarefas
+  - [X] Exibir tarefas vencidas e pendentes.
+  - [X] Link para criar tarefa rápida.
 
 ### Sprint 7: Relatórios e Polimento (Semana 8)
 - [ ] Relatórios View

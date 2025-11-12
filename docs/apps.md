@@ -10,7 +10,7 @@ A estrutura já contém os apps principais. Use esta referência para saber o pa
 | `accounts` | Cadastros de empresas/organizações e ligação com leads/contatos. | Modelo, admin e CRUD ativos no sistema. |
 | `contacts` | Pessoas ligadas a contas (nome, email, telefone, cargo). | Modelo, admin e CRUD concluídos. |
 | `leads` | Pipeline de leads, etapas e conversão para contas/contatos. | Modelo, admin, CRUD e fluxo de conversão entregues. |
-| `tasks` | Atividades vinculadas a leads/contatos, incluindo status e due date. | Estrutura vazia. |
+| `tasks` | Atividades vinculadas a leads/contatos, incluindo status e due date. | Modelo, admin e CRUD concluídos. |
 | `reports` | Telas de filtros por período e agregações simples. | Estrutura vazia. |
 
 ## Modelos esperados por domínio
