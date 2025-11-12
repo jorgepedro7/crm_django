@@ -1,7 +1,9 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
 from django.views.generic import TemplateView
 
 from accounts.models import Account
+from contacts.models import Contact
 
 
 class HomePageView(TemplateView):
@@ -15,9 +17,11 @@ class DashboardView(LoginRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         accounts_total = Account.objects.filter(owner=self.request.user).count()
+        contacts_total = Contact.objects.filter(owner=self.request.user).count()
         context.update(
             {
                 'accounts_total': accounts_total,
+                'contacts_total': contacts_total,
                 'headline_metrics': [
                     {
                         'label': 'Leads ativos',
@@ -63,7 +67,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 ],
                 'quick_links': [
                     {'label': 'Contas', 'href': '#accounts'},
-                    {'label': 'Contatos', 'href': '#contacts'},
+                    {'label': 'Contatos', 'href': reverse_lazy('contacts:list')},
                     {'label': 'Leads', 'href': '#leads'},
                     {'label': 'Tarefas', 'href': '#tasks'},
                     {'label': 'Relatórios', 'href': '#reports'},

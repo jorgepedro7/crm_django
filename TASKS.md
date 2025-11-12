@@ -47,17 +47,17 @@
 - [X] Integrar no Dashboard
   - [X] Query para total de contas em dashboard view.
 
-### Sprint 4: Contatos (Semana 5)
-- [ ] Modelo Contact
-  - [ ] Em contacts/models.py, Contact com FK User e Account, name, email, phone, position.
-  - [ ] created_at/updated_at.
-  - [ ] Makemigrations e migrate.
-- [ ] Admin para Contact
-  - [ ] Registrar em admin.py com filters por account.
-- [ ] CRUD Views
-  - [ ] Similar a Accounts: List/Create/Update/Delete CBVs.
-  - [ ] Template com vinculação a conta via dropdown.
-- [ ] Sidebar link para /contacts/.
+### Sprint 4: Contatos (Semana 5) [X]
+- [X] Modelo Contact
+  - [X] Em contacts/models.py, Contact com FK User e Account, name, email, phone, position.
+  - [X] created_at/updated_at.
+  - [X] Makemigrations e migrate.
+- [X] Admin para Contact
+  - [X] Registrar em admin.py com filters por account.
+- [X] CRUD Views
+  - [X] Similar a Accounts: List/Create/Update/Delete CBVs.
+  - [X] Template com vinculação a conta via dropdown.
+- [X] Sidebar link para /contacts/.
 
 ### Sprint 5: Leads e Pipeline (Semana 6)
 - [ ] Modelo Lead

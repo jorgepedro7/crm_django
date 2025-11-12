@@ -1,3 +1,18 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Contact
+
+
+@admin.register(Contact)
+class ContactAdmin(admin.ModelAdmin):
+    list_display = (
+        'name',
+        'account',
+        'owner',
+        'email',
+        'phone',
+        'updated_at',
+    )
+    list_filter = ('account',)
+    search_fields = ('name', 'email', 'phone')
+    autocomplete_fields = ('account',)
