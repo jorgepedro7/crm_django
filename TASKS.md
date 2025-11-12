@@ -1,23 +1,23 @@
 ## Lista de tarefas
 
-### Sprint 1: Setup Inicial e Autenticação (Semana 1-2)
+### Sprint 1: Setup Inicial e Autenticação (Semana 1-2) [X]
 - [X] Configurar projeto Django base
   - [X] Criar virtualenv e instalar Django 5.x via pip.
   - [X] Executar `django-admin startproject core .` e ajustar settings.py para apps (accounts, contacts, core, leads, profiles, tasks, users, reports).
-  - [ ] Configurar LANGUAGE_CODE='pt-br' e TIME_ZONE='America/Sao_Paulo' em settings.py.
+  - [X] Configurar LANGUAGE_CODE='pt-br' e TIME_ZONE='America/Sao_Paulo' em settings.py.
   - [X] Adicionar apps instalados em INSTALLED_APPS.
-- [ ] Customizar modelo User para e-mail
-  - [ ] Em users/models.py, subclass AbstractUser com USERNAME_FIELD='email' e REQUIRED_FIELDS=[].
-  - [ ] Em users/admin.py, registrar User customizado.
-  - [ ] Criar migração inicial com `python manage.py makemigrations users` e `migrate`.
-- [ ] Implementar views e templates de autenticação
-  - [ ] Em users/views.py, criar CBV LoginView e SignupView usando CreateView para User.
-  - [ ] Configurar urls.py em core e users para /login/, /signup/, /logout/.
-  - [ ] Criar templates base.html com Tailwind CDN, header e footer escuros.
-  - [ ] Criar login.html e signup.html com forms em PT-BR, inputs Tailwind e botão gradiente.
-- [ ] Site público
-  - [ ] Em core/views.py, criar TemplateView para home pública com links para login/signup.
-  - [ ] Template home.html com hero gradiente e chamadas para ação.
+- [X] Customizar modelo User para e-mail
+  - [X] Em users/models.py, subclass AbstractUser com USERNAME_FIELD='email' e REQUIRED_FIELDS=[].
+  - [X] Em users/admin.py, registrar User customizado.
+  - [X] Criar migração inicial com `python manage.py makemigrations users` e `migrate`.
+- [X] Implementar views e templates de autenticação
+  - [X] Em users/views.py, criar CBV LoginView e SignupView usando CreateView para User.
+  - [X] Configurar urls.py em core e users para /login/, /signup/, /logout/.
+  - [X] Criar templates base.html com Tailwind CDN, header e footer escuros.
+  - [X] Criar login.html e signup.html com forms em PT-BR, inputs Tailwind e botão gradiente.
+- [X] Site público
+  - [X] Em core/views.py, criar TemplateView para home pública com links para login/signup.
+  - [X] Template home.html com hero gradiente e chamadas para ação.
 
 ### Sprint 2: Perfis e Dashboard Básico (Semana 3)
 - [ ] Modelo Profile
@@ -105,11 +105,11 @@
 ### Sprint 8: Documentação e Entrega Final (Semana 9)
 - [ ] **Documentação Técnica**
   - [ ] Criar arquivo `README.md` na raiz do projeto contendo:
-    - Descrição geral do sistema.
-    - Requisitos mínimos (Python, Django, dependências).
-    - Instruções para instalação, configuração e execução local.
-    - Estrutura de diretórios e explicação de cada app.
-    - Contato ou autoria do projeto.
+        - Descrição geral do sistema.
+        - Requisitos mínimos (Python, Django, dependências).
+        - Instruções para instalação, configuração e execução local.
+        - Estrutura de diretórios e explicação de cada app.
+        - Contato ou autoria do projeto.
   - [ ] Adicionar instruções para migrações (`makemigrations`, `migrate`) e criação de superusuário.
   - [ ] Criar seção sobre como contribuir (pull requests, convenções de commit).
   - [ ] Gerar diagrama de arquitetura (via Mermaid) no README para ilustrar relação entre apps.
@@ -148,13 +148,6 @@
   - [ ] Revisar consistência visual e tipográfica.
   - [ ] Testar execução completa em ambiente limpo (sem dependências prévias).
 
-### Sprint Final: Docker e Testes (Semana 10+)
-- [ ] Dockerização
-  - [ ] Criar Dockerfile para Django + SQLite.
-  - [ ] docker-compose.yml com volumes para db.sqlite.
-- [ ] Testes Básicos
-  - [ ] Em tests.py de cada app, tests para models e views (pytest ou Django TestCase).
-  - [ ] Cobertura >70% para autenticação e CRUD.
 
 ### Sprint 9: Visualizações Avançadas e Qualidade (Planejado)
 - [ ] Evoluir dashboards com gráfico de linha mensal (leads x conversões) e comparativo com metas.
@@ -162,4 +155,12 @@
 - [ ] Cobrir agregações de relatórios e dashboards com testes automatizados (unitários e integração) garantindo precisão dos gráficos.
 - [ ] Documentar no `docs/overview.md` e `docs/guidelines.md` o padrão de uso dos gráficos e futuras extensões.
 
+
+### Sprint Final: Docker e Testes (Semana 10+)
+- [ ] Dockerização
+  - [ ] Criar Dockerfile para Django + SQLite.
+  - [ ] docker-compose.yml com volumes para db.sqlite.
+- [ ] Testes Básicos
+  - [ ] Em tests.py de cada app, tests para models e views (pytest ou Django TestCase).
+  - [ ] Cobertura >70% para autenticação e CRUD.
 > Notas: Quando metas personalizadas de conversão forem introduzidas, este cálculo deverá ser ajustado mantendo compatibilidade com os gráficos existentes.

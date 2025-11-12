@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block title %}Criar conta • JL CRM{% endblock %}
+
+{% block content %}
+<section class="mx-auto w-full max-w-2xl rounded-3xl border border-slate-800/80 bg-slate-900/70 p-8 shadow-2xl shadow-indigo-900/20">
+    <div class="mb-10 text-center">
+        <p class="text-xs uppercase tracking-[0.35em] text-cyan-300">Nova jornada</p>
+        <h1 class="mt-2 text-3xl font-semibold text-white">Abra sua conta no JL CRM</h1>
+        <p class="mt-2 text-sm text-slate-400">Conecte equipes de vendas e marketing em um hub colaborativo pronto para crescer.</p>
+    </div>
+
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        {% if form.errors and not form.non_field_errors %}
+            <div class="rounded-lg border border-rose-400/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+                Verifique os campos destacados abaixo.
+            </div>
+        {% endif %}
+        {% if form.non_field_errors %}
+            <div class="rounded-lg border border-rose-400/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+                {{ form.non_field_errors|join:" " }}
+            </div>
+        {% endif %}
+
+        <div class="grid gap-6 md:grid-cols-2">
+            <div class="space-y-2 md:col-span-2">
+                <label for="{{ form.email.id_for_label }}" class="text-sm font-medium text-slate-200">E-mail corporativo</label>
+                {{ form.email }}
+                {% if form.email.errors %}
+                    <p class="text-sm text-rose-300">{{ form.email.errors|join:" " }}</p>
+                {% endif %}
+            </div>
+            <div class="space-y-2">
+                <label for="{{ form.password1.id_for_label }}" class="text-sm font-medium text-slate-200">Senha</label>
+                {{ form.password1 }}
+                {% if form.password1.errors %}
+                    <p class="text-sm text-rose-300">{{ form.password1.errors|join:" " }}</p>
+                {% endif %}
+            </div>
+            <div class="space-y-2">
+                <label for="{{ form.password2.id_for_label }}" class="text-sm font-medium text-slate-200">Confirmação</label>
+                {{ form.password2 }}
+                {% if form.password2.errors %}
+                    <p class="text-sm text-rose-300">{{ form.password2.errors|join:" " }}</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <button type="submit" class="w-full rounded-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 px-4 py-3 text-center text-base font-semibold text-white shadow-lg shadow-indigo-600/30 transition hover:opacity-90">
+            Criar minha conta
+        </button>
+    </form>
+
+    <p class="mt-8 text-center text-sm text-slate-400">
+        Já tem acesso?
+        <a href="{% url 'users:login' %}" class="font-semibold text-indigo-300 transition hover:text-indigo-200">Faça login</a>
+    </p>
+</section>
+{% endblock %}

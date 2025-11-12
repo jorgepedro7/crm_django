@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Entrar • JL CRM{% endblock %}
+
+{% block content %}
+<section class="mx-auto w-full max-w-md rounded-3xl border border-slate-800/80 bg-slate-900/70 p-8 shadow-2xl shadow-indigo-900/20">
+    <div class="mb-8 text-center">
+        <p class="text-xs uppercase tracking-[0.3em] text-indigo-300">Sprint 1</p>
+        <h1 class="mt-2 text-2xl font-semibold text-white">Bem-vindo de volta</h1>
+        <p class="mt-2 text-sm text-slate-400">Acesse o painel do JL CRM usando seu e-mail corporativo.</p>
+    </div>
+
+    <form method="post" class="space-y-6">
+        {% csrf_token %}
+        {% if form.non_field_errors %}
+            <div class="rounded-lg border border-rose-400/40 bg-rose-500/10 px-4 py-3 text-sm text-rose-200">
+                {{ form.non_field_errors|join:" " }}
+            </div>
+        {% endif %}
+
+        <div class="space-y-2">
+            <label for="{{ form.username.id_for_label }}" class="text-sm font-medium text-slate-200">E-mail</label>
+            {{ form.username }}
+            {% if form.username.errors %}
+                <p class="text-sm text-rose-300">{{ form.username.errors|join:" " }}</p>
+            {% endif %}
+        </div>
+
+        <div class="space-y-2">
+            <label for="{{ form.password.id_for_label }}" class="text-sm font-medium text-slate-200">Senha</label>
+            {{ form.password }}
+            {% if form.password.errors %}
+                <p class="text-sm text-rose-300">{{ form.password.errors|join:" " }}</p>
+            {% endif %}
+        </div>
+
+        <button type="submit" class="w-full rounded-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 px-4 py-3 text-center text-base font-semibold text-white shadow-lg shadow-indigo-600/30 transition hover:opacity-90">Entrar</button>
+    </form>
+
+    <p class="mt-8 text-center text-sm text-slate-400">
+        Ainda não possui acesso?
+        <a href="{% url 'users:signup' %}" class="font-semibold text-indigo-300 transition hover:text-indigo-200">Crie sua conta</a>
+    </p>
+</section>
+{% endblock %}

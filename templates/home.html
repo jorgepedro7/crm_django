@@ -1,0 +1,76 @@
+{% extends 'base.html' %}
+{% block title %}JL CRM • Plataforma inteligente de relacionamento{% endblock %}
+
+{% block content %}
+<section class="relative overflow-hidden rounded-3xl border border-slate-800/70 bg-gradient-to-br from-slate-900 via-slate-950 to-slate-900 p-8 shadow-2xl shadow-indigo-900/30 md:p-12">
+    <div class="absolute inset-0 -z-10 opacity-50">
+        <div class="h-full w-full bg-[radial-gradient(circle_at_top,_rgba(99,102,241,0.25),_transparent_60%)]"></div>
+    </div>
+    <div class="grid gap-10 lg:grid-cols-2 lg:items-center">
+        <div>
+            <p class="text-xs uppercase tracking-[0.4em] text-indigo-300">CRM focado em resultados</p>
+            <h1 class="mt-4 text-4xl font-semibold text-white md:text-5xl">
+                Conecte marketing e vendas em um pipeline previsível.
+            </h1>
+            <p class="mt-4 text-lg text-slate-300">
+                O JL CRM centraliza contas, leads e tarefas com indicadores em tempo real. A Sprint 1 entrega autenticação segura e uma experiência consistente em tema escuro.
+            </p>
+            <div class="mt-8 flex flex-wrap gap-4">
+                <a href="{% url 'users:signup' %}" class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 px-6 py-3 text-base font-semibold text-white shadow-lg shadow-indigo-600/30 transition hover:opacity-95">
+                    Começar agora
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 12h14m-6-6 6 6-6 6" />
+                    </svg>
+                </a>
+                <a href="{% url 'users:login' %}" class="inline-flex items-center rounded-full border border-slate-500/60 px-6 py-3 text-base font-semibold text-slate-100 transition hover:border-indigo-300 hover:text-white">
+                    Já sou cliente
+                </a>
+            </div>
+            <div class="mt-8 grid gap-6 text-sm text-slate-400 sm:grid-cols-3">
+                <div>
+                    <p class="text-3xl font-semibold text-white">+3x</p>
+                    <p>Velocidade na qualificação de leads</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-semibold text-white">24h</p>
+                    <p>Onboarding completo de equipes híbridas</p>
+                </div>
+                <div>
+                    <p class="text-3xl font-semibold text-white">100%</p>
+                    <p>Visão unificada do funil comercial</p>
+                </div>
+            </div>
+        </div>
+        <div class="rounded-2xl border border-slate-800/70 bg-slate-900/60 p-6 shadow-xl shadow-indigo-900/40">
+            <p class="text-sm uppercase tracking-[0.35em] text-slate-400">Fluxo Sprint 1</p>
+            <ul class="mt-6 space-y-5 text-sm">
+                <li class="flex items-start gap-3">
+                    <span class="mt-1 h-2.5 w-2.5 rounded-full bg-green-400"></span>
+                    <div>
+                        <p class="font-semibold text-white">Autenticação segura</p>
+                        <p class="text-slate-400">Login por e-mail, senhas fortes e feedback amigável.</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="mt-1 h-2.5 w-2.5 rounded-full bg-blue-400"></span>
+                    <div>
+                        <p class="font-semibold text-white">Experiência guiada</p>
+                        <p class="text-slate-400">Formulários em PT-BR, tema escuro e CTA claros.</p>
+                    </div>
+                </li>
+                <li class="flex items-start gap-3">
+                    <span class="mt-1 h-2.5 w-2.5 rounded-full bg-indigo-400"></span>
+                    <div>
+                        <p class="font-semibold text-white">Base para dashboard</p>
+                        <p class="text-slate-400">Home pública direciona squads para login ou cadastro.</p>
+                    </div>
+                </li>
+            </ul>
+            <div class="mt-6 rounded-2xl bg-slate-800/80 p-5 text-sm text-slate-300">
+                <p class="font-semibold text-white">Próximos passos</p>
+                <p class="mt-2">Sprint 2 habilitará perfis e dashboard básico dentro do mesmo tema.</p>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
