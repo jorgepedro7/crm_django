@@ -60,7 +60,7 @@ class DashboardView(LoginRequiredMixin, TemplateView):
         pipeline_steps = []
         for status_value in Lead.Status.values:
             step_count = status_map.get(status_value, 0)
-            percent = int((step_count / leads_total) * 100) if leads_total else 0
+            percent = round((step_count / leads_total) * 100) if leads_total else 0
             pipeline_steps.append(
                 {
                     'name': status_labels.get(status_value, status_value.title()),
@@ -69,6 +69,14 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                     'percent': percent,
                 }
             )
+        converted_total = status_map.get(Lead.Status.CONVERTED, 0)
+        qualified_total = status_map.get(Lead.Status.QUALIFIED, 0)
+        active_leads_total = max(
+            leads_total - status_map.get(Lead.Status.LOST, 0), 0
+        )
+        conversion_rate = (
+            round((converted_total / leads_total) * 100, 1) if leads_total else 0
+        )
         recent_conversions = (
             Lead.objects.filter(owner=user, status=Lead.Status.CONVERTED)
             .select_related('account')
@@ -89,13 +97,13 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'headline_metrics': [
                     {
                         'label': 'Leads ativos',
-                        'value': 18,
-                        'trend': '+12% vs semana anterior',
+                        'value': active_leads_total,
+                        'trend': f'{qualified_total} qualificados',
                     },
                     {
                         'label': 'Taxa de conversão',
-                        'value': '32%',
-                        'trend': '+4 pts',
+                        'value': f'{conversion_rate}%',
+                        'trend': f'{converted_total} convertidos',
                     },
                     {
                         'label': 'Tarefas pendentes',
