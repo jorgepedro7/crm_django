@@ -5,13 +5,13 @@ A estrutura já contém os apps principais. Use esta referência para saber o pa
 ## Resumo rápido
 | App | Responsabilidade | Situação atual |
 | --- | --- | --- |
-| `core` | Configurações, URLs globais, views utilitárias (home pública, dashboard, relatórios). | Home pública e dashboard autenticado publicados. |
+| `core` | Configurações, URLs globais, views utilitárias (home pública, dashboard, relatórios). | Home pública, dashboard com gráfico mensal/metas e relatórios exportáveis. |
 | `users` | Customização do modelo de usuário baseado em e-mail, views de login/signup/logout e perfis. | Modelo custom e autenticação finalizados. |
 | `accounts` | Cadastros de empresas/organizações e ligação com leads/contatos. | Modelo, admin e CRUD ativos no sistema. |
 | `contacts` | Pessoas ligadas a contas (nome, email, telefone, cargo). | Modelo, admin e CRUD concluídos. |
 | `leads` | Pipeline de leads, etapas e conversão para contas/contatos. | Modelo, admin, CRUD e fluxo de conversão entregues. |
 | `tasks` | Atividades vinculadas a leads/contatos, incluindo status e due date. | Modelo, admin e CRUD concluídos. |
-| `reports` | Telas de filtros por período e agregações simples. | View de relatórios com filtros e agregações implementada. |
+| `reports` | Telas de filtros por período e agregações simples. | View com filtros, exportação CSV e agregações por origem/status. |
 
 ## Modelos esperados por domínio
 Os campos abaixo vêm diretamente do PRD. Marque como concluído conforme cada modelo ganhar código e migrações.

@@ -27,16 +27,16 @@ Consolida o planejamento descrito no `PRD.md` para facilitar o acompanhamento do
 | 5 - Pipeline/Integrações | Converter lead em conta/contato, atualizar dashboard. | Concluído junto ao sprint 3, dashboard atualizado com métricas reais. |
 | 6 - Tarefas | Modelo Task, filtros por status, exibição no dashboard. | Concluído: CRUD de tarefas e cards no dashboard. |
 | 7 - Relatórios & Polimento | View de relatórios, mensagens flash, responsividade. | Concluído nesta entrega. |
-| 8 - Documentação & Entrega | README raiz, docs detalhadas, changelog e checklist. | Em planejamento (próximo sprint). |
+| 8 - Documentação & Entrega | README raiz, docs detalhadas, changelog e checklist. | Concluído: documentation pack e screenshots publicados. |
+| 9 - Visualizações & Qualidade | Gráfico mensal, exportação CSV e testes de agregações. | Concluído nesta sprint. |
 | Final - Docker/Testes | Dockerfile, docker-compose, cobertura de testes >70%. | Planejado, sem entregas. |
 
 ## Checklist imediato
-- [ ] Consolidar documentação final (README, rotas, modelos e convenções).
 - [ ] Preparar ambiente Docker + docker-compose.
-- [ ] Estruturar suíte de testes (unitários + integração) visando cobertura >70%.
-- [ ] Integrar gráficos interativos aos relatórios usando dados reais.
+- [ ] Estruturar suíte abrangente de testes (unitários + integração) visando cobertura >70%.
+- [ ] Automatizar pipeline de CI (lint, tests) para os próximos releases.
 
 ## Pendências registradas para as sprints finais
 - Dockerização do stack (Dockerfile + docker-compose com volume do SQLite).
 - Testes unitários e de integração cobrindo autenticação, CRUDs e relatórios.
-- Evolução dos gráficos (funil, comparativo temporal) reutilizando dados agregados disponíveis nos relatórios.
+- Automatização de builds (CI) para validar Docker + testes antes do deploy.

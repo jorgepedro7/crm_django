@@ -1,7 +1,10 @@
+import csv
 from datetime import datetime, timedelta
 
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count, Q
+from django.db.models.functions import TruncMonth
+from django.http import HttpResponse
 from django.urls import reverse_lazy
 from django.utils import timezone
 from django.views.generic import TemplateView
@@ -19,6 +22,8 @@ class HomePageView(TemplateView):
 class DashboardView(LoginRequiredMixin, TemplateView):
     template_name = 'dashboard.html'
     login_url = 'users:login'
+    monthly_goal = 10
+    month_span = 6
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -82,6 +87,8 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             .select_related('account')
             .order_by('-updated_at')[:10]
         )
+        monthly_stats = self._build_monthly_stats(user, today)
+        monthly_chart = self._build_monthly_chart(monthly_stats)
         context.update(
             {
                 'accounts_total': accounts_total,
@@ -94,6 +101,9 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                 'upcoming_tasks': upcoming_tasks,
                 'recent_conversions': recent_conversions,
                 'pipeline_steps': pipeline_steps,
+                'monthly_stats': monthly_stats,
+                'monthly_goal': self.monthly_goal,
+                'monthly_chart': monthly_chart,
                 'headline_metrics': [
                     {
                         'label': 'Leads ativos',
@@ -110,6 +120,11 @@ class DashboardView(LoginRequiredMixin, TemplateView):
                         'value': pending_total,
                         'trend': f'{overdue_total} vencidas',
                     },
+                    {
+                        'label': 'Contas ativas',
+                        'value': accounts_total,
+                        'trend': f'{contacts_total} contatos vinculados',
+                    },
                 ],
                 'quick_links': [
                     {'label': 'Leads', 'href': reverse_lazy('leads:list')},
@@ -121,6 +136,72 @@ class DashboardView(LoginRequiredMixin, TemplateView):
             }
         )
         return context
+
+    def _shift_month(self, base_date, offset):
+        month = base_date.month + offset
+        year = base_date.year + (month - 1) // 12
+        month = (month - 1) % 12 + 1
+        return base_date.replace(year=year, month=month, day=1)
+
+    def _build_monthly_stats(self, user, today):
+        base_month = today.replace(day=1)
+        month_keys = [
+            self._shift_month(base_month, -i)
+            for i in range(self.month_span - 1, -1, -1)
+        ]
+        earliest_month = month_keys[0]
+        monthly_rows = (
+            Lead.objects.filter(owner=user, created_at__date__gte=earliest_month)
+            .annotate(period=TruncMonth('created_at'))
+            .values('period')
+            .annotate(
+                total=Count('id'),
+                converted=Count('id', filter=Q(status=Lead.Status.CONVERTED)),
+            )
+        )
+        monthly_map = {
+            row['period'].date(): {
+                'total': row['total'],
+                'converted': row['converted'],
+            }
+            for row in monthly_rows
+        }
+        stats = []
+        for month in month_keys:
+            row = monthly_map.get(month, {'total': 0, 'converted': 0})
+            stats.append(
+                {
+                    'label': month.strftime('%b/%y'),
+                    'total': row['total'],
+                    'converted': row['converted'],
+                    'goal': self.monthly_goal,
+                    'goal_delta': row['converted'] - self.monthly_goal,
+                }
+            )
+        return stats
+
+    def _build_monthly_chart(self, stats):
+        max_value = max(
+            [max(item['total'], item['converted']) for item in stats] or [1]
+        )
+        step = 100 / max(len(stats) - 1, 1)
+        leads_points = []
+        converted_points = []
+        for idx, item in enumerate(stats):
+            x = idx * step
+            leads_y = 100 - ((item['total'] / max_value) * 100 if max_value else 0)
+            converted_y = 100 - (
+                (item['converted'] / max_value) * 100 if max_value else 0
+            )
+            leads_points.append(f'{x:.2f},{leads_y:.2f}')
+            converted_points.append(f'{x:.2f},{converted_y:.2f}')
+        return {
+            'width': 100,
+            'height': 100,
+            'leads_points': ' '.join(leads_points),
+            'converted_points': ' '.join(converted_points),
+            'max_value': max_value,
+        }
 
 
 class ReportsView(LoginRequiredMixin, TemplateView):
@@ -219,3 +300,22 @@ class ReportsView(LoginRequiredMixin, TemplateView):
             }
         )
         return context
+
+    def render_to_response(self, context, **response_kwargs):
+        if self.request.GET.get('export') == 'csv':
+            return self._export_csv(context)
+        return super().render_to_response(context, **response_kwargs)
+
+    def _export_csv(self, context):
+        filename = (
+            f"relatorio_{context['filter_start']:%Y-%m-%d}_{context['filter_end']:%Y-%m-%d}.csv"
+        )
+        response = HttpResponse(content_type='text/csv')
+        response['Content-Disposition'] = f'attachment; filename="{filename}"'
+        writer = csv.writer(response)
+        writer.writerow(['Origem', 'Leads', 'Convertidos', 'Taxa (%)'])
+        for row in context['source_summary']:
+            writer.writerow(
+                [row['label'], row['total'], row['converted'], row['conversion_rate']]
+            )
+        return response

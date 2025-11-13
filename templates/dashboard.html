@@ -23,6 +23,7 @@
                         return;
                     }
                     column.style.height = clamp(value, 0, 100) + '%';
+                    column.style.minHeight = '1.25rem';
                 });
         });
     </script>
@@ -69,30 +70,102 @@
     <section class="flex-1 space-y-6">
         <header class="rounded-3xl border border-slate-800/60 bg-slate-900/70 p-6 shadow-2xl shadow-indigo-900/40">
             <p class="text-xs uppercase tracking-[0.35em] text-indigo-300">Visão geral</p>
-            <div class="mt-4 flex flex-wrap items-end justify-between gap-4">
+            <div class="mt-4 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                 <div>
                     <h1 class="text-3xl font-semibold text-white">Dashboard comercial</h1>
-                    <p class="mt-2 text-sm text-slate-400">Resumo diário de leads, conversões e tarefas em andamento.</p>
+                    <p class="mt-2 text-sm text-slate-400">Resumo diário do pipeline, conversões e tarefas do time.</p>
                 </div>
-                <a href="{% url 'leads:create' %}" class="inline-flex items-center gap-2 rounded-full border border-indigo-400/60 px-4 py-2 text-sm font-semibold text-indigo-100 transition hover:bg-indigo-500/20">
-                    Adicionar lead rápido
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v12m6-6H6" />
-                    </svg>
-                </a>
+                <div class="flex flex-wrap gap-3">
+                    <a href="{% url 'leads:create' %}" class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-900/30 transition hover:opacity-90">
+                        Novo lead
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v12m6-6H6" />
+                        </svg>
+                    </a>
+                    <a href="{% url 'tasks:create' %}" class="inline-flex items-center gap-2 rounded-full border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-200 transition hover:border-indigo-400">
+                        Nova tarefa
+                    </a>
+                </div>
             </div>
         </header>
 
-        <div class="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+        <div class="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             {% for metric in headline_metrics %}
-                <div class="group rounded-3xl border border-slate-800/50 bg-gradient-to-br from-slate-950/90 via-slate-900/80 to-slate-950/90 p-5 shadow-lg shadow-black/30 transition hover:border-indigo-400/60 hover:bg-indigo-950/30">
+                <div class="rounded-3xl border border-slate-800/60 bg-gradient-to-br from-slate-950/90 via-slate-900/80 to-slate-950/90 p-5 shadow-lg shadow-black/30">
                     <div class="flex items-center justify-between">
-                        <p class="text-sm font-medium text-slate-300">{{ metric.label }}</p>
+                        <p class="text-xs uppercase tracking-[0.3em] text-slate-400">{{ metric.label }}</p>
                         <span class="rounded-full bg-slate-900/80 px-2 py-1 text-xs text-slate-400">{{ metric.trend }}</span>
                     </div>
-                    <p class="mt-4 text-4xl font-semibold text-white">{{ metric.value }}</p>
+                        <p class="mt-4 text-4xl font-semibold text-white">{{ metric.value }}</p>
                 </div>
             {% endfor %}
+        </div>
+
+        <div id="monthly" class="grid gap-6 xl:grid-cols-2">
+            <div class="rounded-3xl border border-slate-800/60 bg-slate-900/70 p-6 shadow-xl shadow-black/30">
+                <div class="flex flex-wrap items-center justify-between gap-3">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Leads x conversões</p>
+                        <h2 class="mt-2 text-xl font-semibold text-white">Últimos {{ monthly_stats|length }} meses</h2>
+                    </div>
+                    <div class="flex items-center gap-3 text-xs">
+                        <span class="inline-flex items-center gap-1 text-indigo-200"><span class="h-2 w-2 rounded-full bg-indigo-400"></span>Leads</span>
+                        <span class="inline-flex items-center gap-1 text-emerald-200"><span class="h-2 w-2 rounded-full bg-emerald-400"></span>Convertidos</span>
+                    </div>
+                </div>
+                {% if monthly_chart.leads_points %}
+                    <svg viewBox="0 0 {{ monthly_chart.width }} {{ monthly_chart.height }}" class="mt-6 h-48 w-full rounded-2xl bg-slate-950/40 p-4" preserveAspectRatio="none">
+                        <defs>
+                            <linearGradient id="leadsGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color: #818cf8;" />
+                                <stop offset="100%" style="stop-color: #38bdf8;" />
+                            </linearGradient>
+                            <linearGradient id="convertedGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color: #34d399;" />
+                                <stop offset="100%" style="stop-color: #10b981;" />
+                            </linearGradient>
+                        </defs>
+                        <polyline fill="none" stroke="url(#leadsGradient)" stroke-width="2" points="{{ monthly_chart.leads_points }}" />
+                        <polyline fill="none" stroke="url(#convertedGradient)" stroke-width="2" points="{{ monthly_chart.converted_points }}" />
+                    </svg>
+                {% else %}
+                    <div class="mt-6 rounded-2xl border border-dashed border-slate-700 px-4 py-10 text-center text-sm text-slate-400">
+                        Cadastre leads para visualizar o gráfico.
+                    </div>
+                {% endif %}
+                <p class="mt-4 text-xs text-slate-500">Meta mensal: {{ monthly_goal }} conversões. Pico atual: {{ monthly_chart.max_value }} leads.</p>
+            </div>
+
+            <div class="rounded-3xl border border-slate-800/60 bg-slate-900/70 p-6 shadow-xl shadow-black/30">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-semibold text-white">Desempenho mensal</h2>
+                    <span class="text-xs text-slate-400">Comparativo contra meta</span>
+                </div>
+                <div class="mt-4 overflow-x-auto rounded-2xl border border-slate-800/70">
+                    <table class="min-w-full divide-y divide-slate-800 text-sm">
+                        <thead class="bg-slate-950/40 text-slate-400">
+                            <tr>
+                                <th class="px-4 py-3 text-left font-medium">Mês</th>
+                                <th class="px-4 py-3 text-left font-medium">Leads</th>
+                                <th class="px-4 py-3 text-left font-medium">Convertidos</th>
+                                <th class="px-4 py-3 text-left font-medium">Δ Meta</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800 text-slate-200">
+                            {% for stat in monthly_stats %}
+                                <tr class="hover:bg-slate-900/50">
+                                    <td class="px-4 py-3 font-semibold text-white">{{ stat.label }}</td>
+                                    <td class="px-4 py-3">{{ stat.total }}</td>
+                                    <td class="px-4 py-3">{{ stat.converted }}</td>
+                                    <td class="px-4 py-3 font-semibold {% if stat.goal_delta >= 0 %}text-emerald-300{% else %}text-rose-300{% endif %}">
+                                        {% if stat.goal_delta >= 0 %}+{% endif %}{{ stat.goal_delta }}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
         </div>
 
         <div id="leads" class="grid gap-6 xl:grid-cols-2">

@@ -1,5 +1,13 @@
 # Changelog
 
+# Changelog
+
+## [Sprint 9] - 2025-11-13
+- Dashboard ganhou gráfico de linha mensal (leads vs. conversões) com comparação contra a meta e tabela detalhada.
+- Pipeline utiliza percentuais reais para barras/colunas.
+- Relatórios agora exportam CSV e contam com botão dedicado no header.
+- Testes automatizados cobrem agregações de relatórios e estatísticas mensais do dashboard.
+
 ## [Sprint 8] - 2025-11-13
 - Documentação completa: README raiz, rotas, modelos, convenções, UI e checklist.
 - Novas capturas de tela das principais telas (login, dashboard, módulos e relatórios).

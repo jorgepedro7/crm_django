@@ -50,5 +50,6 @@
 | Rota | Métodos | Autenticação | Notas |
 | --- | --- | --- | --- |
 | `/reports/` | GET | Autenticado | View com filtros `data_inicio` e `data_fim`, agregações por origem e estágio. |
+| `/reports/?export=csv` | GET | Autenticado | Exporta o relatório filtrado em CSV (colunas: origem, leads, convertidos, taxa). |
 
 > Todas as rotas autenticadas usam `LoginRequiredMixin` e redirecionam para `/login/` caso a sessão expire. CSRF está habilitado por padrão em todos os formulários POST. As rotas são server-rendered (HTML), portanto não há payload JSON padrão além dos dados de formulários submetidos via POST.

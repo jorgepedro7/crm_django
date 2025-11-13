@@ -27,6 +27,9 @@ As regras abaixo consolidam o que já está descrito no `PRD.md`. Atualize apena
 - Tipografia padrão: `font-sans`, tamanhos `text-3xl` para títulos principais e `text-base` para corpo.
 - Botões com gradiente azul/indigo e estados `hover` evidentes; inputs com `focus:ring`.
 - Formularios em PT-BR, com mensagens de erro claras e layout em até 3 cliques para ações críticas (meta definida no PRD).
+- Gráfico mensal do dashboard usa `<svg>` com `polyline`; normalize os valores para 0-100, mantenha a quantidade de meses definida em `DashboardView.month_span` e compare conversões com `monthly_goal`.
+- As barras do pipeline e colunas de conversão devem utilizar percentuais reais via `style="width: {{ step.percent }}%"` ou `style="height: calc({{ step.percent }}% + 1rem)"`, evitando dados mockados.
+- A view `/reports/` precisa preservar o botão “Exportar CSV” que envia os filtros atuais (`data_inicio`, `data_fim`) na query string.
 
 ## Segurança e performance
 - Autenticação nativa do Django com CSRF habilitado em todos os formulários.

@@ -20,6 +20,7 @@
 - **Botões secundários**: `border border-slate-700` + `hover:border-indigo-400`.
 - **Inputs**: `rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-3 text-slate-100 focus:ring-2`.
 - **Tabelas**: wrappers com `overflow-x-auto`, `divide-y divide-slate-800` e cabeçalhos `bg-slate-950/40`.
+- **Gráficos**: o dashboard usa `svg` com `polyline` para o gráfico de linha mensal, além de barras horizontais usando `style="width: {{ percent }}%"`.
 
 ## Capturas de tela
 | Tela | Arquivo |

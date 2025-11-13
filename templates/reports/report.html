@@ -20,7 +20,7 @@
 {% block content %}
 <section class="space-y-6">
     <header class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-indigo-900/30">
-        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+        <div class="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
                 <p class="text-xs uppercase tracking-[0.35em] text-indigo-300">Inteligência</p>
                 <h1 class="mt-2 text-3xl font-semibold text-white">Relatórios</h1>
@@ -37,6 +37,9 @@
                 </label>
                 <button type="submit" class="mt-2 rounded-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 px-4 py-2 font-semibold text-white shadow-lg shadow-indigo-900/30 transition hover:opacity-90 md:mt-6">Filtrar</button>
             </form>
+            <a href="?data_inicio={{ filter_start|date:'Y-m-d' }}&data_fim={{ filter_end|date:'Y-m-d' }}&export=csv" class="inline-flex items-center justify-center rounded-2xl border border-slate-700 px-4 py-3 text-sm font-semibold text-slate-200 transition hover:border-indigo-400">
+                Exportar CSV
+            </a>
         </div>
     </header>
 

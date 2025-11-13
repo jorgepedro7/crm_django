@@ -55,7 +55,7 @@ python manage.py runserver
 - **accounts/contacts**: empresas e pessoas responsáveis por cada relacionamento.
 - **leads**: pipeline com status e ação de conversão que cria/relaciona contas e contatos.
 - **tasks**: atividades com due date e status, exibidas no dashboard.
-- **core**: home, dashboard e relatórios com filtros por período.
+- **core**: home, dashboard com gráfico mensal + metas e relatórios filtráveis/exportáveis (CSV).
 
 ## Fluxo de dados (Mermaid)
 

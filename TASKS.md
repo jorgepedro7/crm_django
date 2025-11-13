@@ -149,11 +149,11 @@
   - [X] Testar execução completa em ambiente limpo (sem dependências prévias).
 
 
-### Sprint 9: Visualizações Avançadas e Qualidade (Planejado)
-- [ ] Evoluir dashboards com gráfico de linha mensal (leads x conversões) e comparativo com metas.
-- [ ] Disponibilizar exportação de relatórios filtrados em CSV diretamente pela página de relatórios.
-- [ ] Cobrir agregações de relatórios e dashboards com testes automatizados (unitários e integração) garantindo precisão dos gráficos.
-- [ ] Documentar no `docs/overview.md` e `docs/guidelines.md` o padrão de uso dos gráficos e futuras extensões.
+### Sprint 9: Visualizações Avançadas e Qualidade [X]
+- [X] Evoluir dashboards com gráfico de linha mensal (leads x conversões) e comparativo com metas.
+- [X] Disponibilizar exportação de relatórios filtrados em CSV diretamente pela página de relatórios.
+- [X] Cobrir agregações de relatórios e dashboards com testes automatizados (unitários e integração) garantindo precisão dos gráficos.
+- [X] Documentar no `docs/overview.md` e `docs/guidelines.md` o padrão de uso dos gráficos e futuras extensões.
 
 
 ### Sprint Final: Docker e Testes (Semana 10+)
