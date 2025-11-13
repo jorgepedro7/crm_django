@@ -90,17 +90,17 @@
   - [X] Exibir tarefas vencidas e pendentes.
   - [X] Link para criar tarefa rápida.
 
-### Sprint 7: Relatórios e Polimento (Semana 8)
-- [ ] Relatórios View
-  - [ ] Em core/views.py, TemplateView com filtros GET (data_inicio, data_fim).
-  - [ ] Query agregada por origem de lead e taxa de conversão usando annotate.
-- [ ] Template report.html com tabela e gráficos interativos alimentados pelo filtro de período.
-- [ ] Polir UX
-  - [ ] Adicionar mensagens flash (Django messages) em PT-BR para ações CRUD.
-  - [ ] Garantir responsividade em todos templates.
-  - [ ] Testar fluxos end-to-end manualmente.
-- [ ] Preparar para Sprints Finais
-  - [ ] Documentar pendências: Docker, testes unitários, integração dos gráficos.
+### Sprint 7: Relatórios e Polimento (Semana 8) [X]
+- [X] Relatórios View
+  - [X] Em core/views.py, TemplateView com filtros GET (data_inicio, data_fim).
+  - [X] Query agregada por origem de lead e taxa de conversão usando annotate.
+- [X] Template report.html com tabela e gráficos interativos alimentados pelo filtro de período.
+- [X] Polir UX
+  - [X] Adicionar mensagens flash (Django messages) em PT-BR para ações CRUD.
+  - [X] Garantir responsividade em todos templates.
+  - [X] Testar fluxos end-to-end manualmente.
+- [X] Preparar para Sprints Finais
+  - [X] Documentar pendências: Docker, testes unitários, integração dos gráficos.
 
 ### Sprint 8: Documentação e Entrega Final (Semana 9)
 - [ ] **Documentação Técnica**

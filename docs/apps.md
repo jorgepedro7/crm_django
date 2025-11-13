@@ -11,7 +11,7 @@ A estrutura já contém os apps principais. Use esta referência para saber o pa
 | `contacts` | Pessoas ligadas a contas (nome, email, telefone, cargo). | Modelo, admin e CRUD concluídos. |
 | `leads` | Pipeline de leads, etapas e conversão para contas/contatos. | Modelo, admin, CRUD e fluxo de conversão entregues. |
 | `tasks` | Atividades vinculadas a leads/contatos, incluindo status e due date. | Modelo, admin e CRUD concluídos. |
-| `reports` | Telas de filtros por período e agregações simples. | Estrutura vazia. |
+| `reports` | Telas de filtros por período e agregações simples. | View de relatórios com filtros e agregações implementada. |
 
 ## Modelos esperados por domínio
 Os campos abaixo vêm diretamente do PRD. Marque como concluído conforme cada modelo ganhar código e migrações.
@@ -36,6 +36,7 @@ Os campos abaixo vêm diretamente do PRD. Marque como concluído conforme cada m
 ### Tasks
 - Campos: `title`, `description`, `due_date`, `status` (`pendente`, `concluida`, `cancelada`), `related_lead`, `related_contact`, `owner`.
 - Dashboard deve destacar tarefas vencidas e pendentes.
+- Contagens exibidas no dashboard (ex.: badge de tarefas vencidas) devem usar o total real de registros filtrados, mesmo que a lista mostre apenas os três primeiros itens.
 
 ### Reports
 - Sem modelos específicos no PRD; use consultas agregadas via ORM para gerar resumo por período (origem de lead, taxa de conversão) e exportação CSV simples se necessário.

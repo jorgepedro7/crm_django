@@ -1,4 +1,6 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
 
@@ -41,14 +43,20 @@ class AccountFormMixin(AccountBaseMixin):
         return super().form_valid(form)
 
 
-class AccountCreateView(AccountFormMixin, CreateView):
+class AccountCreateView(SuccessMessageMixin, AccountFormMixin, CreateView):
     template_name = 'accounts/account_form.html'
+    success_message = 'Conta criada com sucesso.'
 
 
-class AccountUpdateView(AccountFormMixin, UpdateView):
+class AccountUpdateView(SuccessMessageMixin, AccountFormMixin, UpdateView):
     template_name = 'accounts/account_form.html'
+    success_message = 'Conta atualizada com sucesso.'
 
 
 class AccountDeleteView(AccountBaseMixin, DeleteView):
     template_name = 'accounts/account_confirm_delete.html'
     success_url = reverse_lazy('accounts:list')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Conta excluída com sucesso.')
+        return super().delete(request, *args, **kwargs)

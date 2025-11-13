@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.shortcuts import redirect
 from django.urls import reverse_lazy
@@ -76,17 +77,23 @@ class LeadFormMixin(LeadBaseMixin):
         return super().form_valid(form)
 
 
-class LeadCreateView(LeadFormMixin, CreateView):
+class LeadCreateView(SuccessMessageMixin, LeadFormMixin, CreateView):
     template_name = 'leads/lead_form.html'
+    success_message = 'Lead cadastrado com sucesso.'
 
 
-class LeadUpdateView(LeadFormMixin, UpdateView):
+class LeadUpdateView(SuccessMessageMixin, LeadFormMixin, UpdateView):
     template_name = 'leads/lead_form.html'
+    success_message = 'Lead atualizado com sucesso.'
 
 
 class LeadDeleteView(LeadBaseMixin, DeleteView):
     template_name = 'leads/lead_confirm_delete.html'
     success_url = reverse_lazy('leads:list')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Lead excluído com sucesso.')
+        return super().delete(request, *args, **kwargs)
 
 
 class LeadConvertView(LeadBaseMixin, SingleObjectMixin, View):

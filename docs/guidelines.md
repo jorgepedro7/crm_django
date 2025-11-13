@@ -22,6 +22,7 @@ As regras abaixo consolidam o que já está descrito no `PRD.md`. Atualize apena
 
 ## Frontend e experiência
 - TailwindCSS via CDN em todos os templates, mantendo tema escuro (`bg-slate-800/700`, textos claros, destaques azul/indigo).
+- Carregar o script do Tailwind CDN no `<head>` sem `defer` para que o runtime JIT injete os estilos antes do primeiro paint (evita páginas exibidas em HTML puro).
 - Navbar superior, sidebar fixa e conteúdo central responsivo (mobile-first).
 - Tipografia padrão: `font-sans`, tamanhos `text-3xl` para títulos principais e `text-base` para corpo.
 - Botões com gradiente azul/indigo e estados `hover` evidentes; inputs com `focus:ring`.

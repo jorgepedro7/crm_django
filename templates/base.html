@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com?plugins=forms,typography" defer></script>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,typography"></script>
     {% block extra_head %}{% endblock %}
 </head>
 <body class="min-h-screen bg-slate-950 font-sans text-slate-100">
@@ -36,6 +36,7 @@
                     <a href="{% url 'accounts:list' %}" class="transition hover:text-white">Contas</a>
                     <a href="{% url 'contacts:list' %}" class="transition hover:text-white">Contatos</a>
                     <a href="{% url 'tasks:list' %}" class="transition hover:text-white">Tarefas</a>
+                    <a href="{% url 'reports' %}" class="transition hover:text-white">Relatórios</a>
                     <span class="hidden text-slate-500 sm:inline">|</span>
                     <span class="hidden text-sm text-slate-300 sm:inline">{{ user.email }}</span>
                     <a href="{% url 'users:logout' %}" class="rounded-full bg-indigo-500/80 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400/80">Sair</a>

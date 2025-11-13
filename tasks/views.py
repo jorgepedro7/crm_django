@@ -1,4 +1,6 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -66,14 +68,20 @@ class TaskFormMixin(TaskBaseMixin):
         return super().form_valid(form)
 
 
-class TaskCreateView(TaskFormMixin, CreateView):
+class TaskCreateView(SuccessMessageMixin, TaskFormMixin, CreateView):
     template_name = 'tasks/task_form.html'
+    success_message = 'Tarefa criada com sucesso.'
 
 
-class TaskUpdateView(TaskFormMixin, UpdateView):
+class TaskUpdateView(SuccessMessageMixin, TaskFormMixin, UpdateView):
     template_name = 'tasks/task_form.html'
+    success_message = 'Tarefa atualizada com sucesso.'
 
 
 class TaskDeleteView(TaskBaseMixin, DeleteView):
     template_name = 'tasks/task_confirm_delete.html'
     success_url = reverse_lazy('tasks:list')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Tarefa excluída com sucesso.')
+        return super().delete(request, *args, **kwargs)

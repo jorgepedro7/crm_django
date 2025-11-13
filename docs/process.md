@@ -20,21 +20,23 @@ Consolida o planejamento descrito no `PRD.md` para facilitar o acompanhamento do
 ## Roadmap por sprint
 | Sprint | Foco | Status atual |
 | --- | --- | --- |
-| 1 - Setup & Auth | Criar projeto, apps, ajustar settings, iniciar custom user. | Parcialmente concluído: projeto base criado; ajustes de idioma/user pendentes. |
-| 2 - Perfis & Dashboard | Model `Profile`, dashboard básico com métricas. | Não iniciado. |
-| 3 - Leads (parte 1) | Modelo Lead, admin, CRUD, conversão. | Não iniciado. |
-| 4 - Contas/Contatos | CRUD completo e listas paginadas. | Não iniciado. |
-| 5 - Pipeline/Integrações | Converter lead em conta/contato, atualizar dashboard. | Não iniciado. |
-| 6 - Tarefas | Modelo Task, filtros por status, exibição no dashboard. | Não iniciado. |
-| 7 - Relatórios & Polimento | View de relatórios, mensagens flash, responsividade. | Não iniciado. |
-| 8 - Documentação & Entrega | README raiz, docs detalhadas, changelog e checklist. | Em progresso (esta pasta inicia a documentação). |
+| 1 - Setup & Auth | Criar projeto, apps, ajustar settings, iniciar custom user. | Concluído: projeto configurado, idioma/horário ajustados e autenticação via e-mail em produção. |
+| 2 - Perfis & Dashboard | Model `Profile`, dashboard básico com métricas. | Concluído: Profile com signal automático e dashboard protegido online. |
+| 3 - Leads (parte 1) | Modelo Lead, admin, CRUD, conversão. | Concluído: pipeline funcional com conversão para contas/contatos. |
+| 4 - Contas/Contatos | CRUD completo e listas paginadas. | Concluído: módulos entregues com validações e templates Tailwind. |
+| 5 - Pipeline/Integrações | Converter lead em conta/contato, atualizar dashboard. | Concluído junto ao sprint 3, dashboard atualizado com métricas reais. |
+| 6 - Tarefas | Modelo Task, filtros por status, exibição no dashboard. | Concluído: CRUD de tarefas e cards no dashboard. |
+| 7 - Relatórios & Polimento | View de relatórios, mensagens flash, responsividade. | Concluído nesta entrega. |
+| 8 - Documentação & Entrega | README raiz, docs detalhadas, changelog e checklist. | Em planejamento (próximo sprint). |
 | Final - Docker/Testes | Dockerfile, docker-compose, cobertura de testes >70%. | Planejado, sem entregas. |
 
 ## Checklist imediato
-- [ ] Ajustar `LANGUAGE_CODE='pt-br'` e `TIME_ZONE='America/Sao_Paulo'` em `core/settings.py`.
-- [ ] Implementar `users/models.py` com `AbstractUser` baseado em e-mail e registrar no admin.
-- [ ] Criar views/templates de login, signup e home pública com Tailwind conforme PRD.
-- [ ] Criar modelos para leads, accounts, contacts, tasks e seus CRUDs iniciais.
-- [ ] Configurar URLs dos apps no `core/urls.py` e proteger com autenticação.
+- [ ] Consolidar documentação final (README, rotas, modelos e convenções).
+- [ ] Preparar ambiente Docker + docker-compose.
+- [ ] Estruturar suíte de testes (unitários + integração) visando cobertura >70%.
+- [ ] Integrar gráficos interativos aos relatórios usando dados reais.
 
-Atualize esta lista sempre que concluir um item para manter o alinhamento entre o código e o plano oficial.
+## Pendências registradas para as sprints finais
+- Dockerização do stack (Dockerfile + docker-compose com volume do SQLite).
+- Testes unitários e de integração cobrindo autenticação, CRUDs e relatórios.
+- Evolução dos gráficos (funil, comparativo temporal) reutilizando dados agregados disponíveis nos relatórios.

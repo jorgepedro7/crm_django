@@ -1,4 +1,6 @@
+from django.contrib import messages
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.messages.views import SuccessMessageMixin
 from django.db.models import Q
 from django.urls import reverse_lazy
 from django.views.generic import CreateView, DeleteView, ListView, UpdateView
@@ -46,14 +48,20 @@ class ContactFormMixin(ContactBaseMixin):
         return super().form_valid(form)
 
 
-class ContactCreateView(ContactFormMixin, CreateView):
+class ContactCreateView(SuccessMessageMixin, ContactFormMixin, CreateView):
     template_name = 'contacts/contact_form.html'
+    success_message = 'Contato cadastrado com sucesso.'
 
 
-class ContactUpdateView(ContactFormMixin, UpdateView):
+class ContactUpdateView(SuccessMessageMixin, ContactFormMixin, UpdateView):
     template_name = 'contacts/contact_form.html'
+    success_message = 'Contato atualizado com sucesso.'
 
 
 class ContactDeleteView(ContactBaseMixin, DeleteView):
     template_name = 'contacts/contact_confirm_delete.html'
     success_url = reverse_lazy('contacts:list')
+
+    def delete(self, request, *args, **kwargs):
+        messages.success(request, 'Contato excluído com sucesso.')
+        return super().delete(request, *args, **kwargs)

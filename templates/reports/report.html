@@ -1,0 +1,104 @@
+{% extends 'base.html' %}
+{% block title %}Relatórios • JL CRM{% endblock %}
+
+{% block content %}
+<section class="space-y-6">
+    <header class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-indigo-900/30">
+        <div class="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+            <div>
+                <p class="text-xs uppercase tracking-[0.35em] text-indigo-300">Inteligência</p>
+                <h1 class="mt-2 text-3xl font-semibold text-white">Relatórios</h1>
+                <p class="mt-1 text-sm text-slate-400">Filtre o período e acompanhe a performance por origem e status do pipeline.</p>
+            </div>
+            <form method="get" class="grid gap-3 rounded-2xl border border-slate-800/70 bg-slate-950/40 px-4 py-3 text-sm md:grid-cols-3">
+                <label class="flex flex-col gap-1 text-slate-300">
+                    <span class="text-xs uppercase tracking-wider text-slate-500">Início</span>
+                    <input type="date" name="data_inicio" value="{{ filter_start|date:'Y-m-d' }}" class="rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-slate-100 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/30">
+                </label>
+                <label class="flex flex-col gap-1 text-slate-300">
+                    <span class="text-xs uppercase tracking-wider text-slate-500">Fim</span>
+                    <input type="date" name="data_fim" value="{{ filter_end|date:'Y-m-d' }}" class="rounded-xl border border-slate-700 bg-slate-900/70 px-3 py-2 text-slate-100 focus:border-indigo-400 focus:outline-none focus:ring-2 focus:ring-indigo-400/30">
+                </label>
+                <button type="submit" class="mt-2 rounded-xl bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 px-4 py-2 font-semibold text-white shadow-lg shadow-indigo-900/30 transition hover:opacity-90 md:mt-6">Filtrar</button>
+            </form>
+        </div>
+    </header>
+
+    <div class="grid gap-4 md:grid-cols-3">
+        <div class="rounded-2xl border border-slate-800/70 bg-slate-900/70 p-5 shadow-inner shadow-black/20">
+            <p class="text-xs uppercase tracking-[0.3em] text-slate-400">Leads analisados</p>
+            <p class="mt-3 text-4xl font-semibold text-white">{{ total_leads }}</p>
+            <p class="mt-1 text-sm text-slate-500">{{ filter_start|date:'d/m' }} → {{ filter_end|date:'d/m' }}</p>
+        </div>
+        <div class="rounded-2xl border border-emerald-500/40 bg-emerald-500/10 p-5 shadow-inner shadow-emerald-900/20">
+            <p class="text-xs uppercase tracking-[0.3em] text-emerald-200">Convertidos</p>
+            <p class="mt-3 text-4xl font-semibold text-white">{{ converted_total }}</p>
+            <p class="mt-1 text-sm text-emerald-100/80">Total no período filtrado</p>
+        </div>
+        <div class="rounded-2xl border border-indigo-500/40 bg-indigo-500/10 p-5 shadow-inner shadow-indigo-900/20">
+            <p class="text-xs uppercase tracking-[0.3em] text-indigo-200">Taxa de conversão</p>
+            <p class="mt-3 text-4xl font-semibold text-white">{{ conversion_rate }}%</p>
+            <p class="mt-1 text-sm text-indigo-100/80">Convertidos / Leads</p>
+        </div>
+    </div>
+
+    {% if total_leads %}
+        <div class="grid gap-6 lg:grid-cols-2">
+            <div class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-indigo-900/20">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-semibold text-white">Origem x Conversão</h2>
+                    <span class="text-xs text-slate-400">{{ source_summary|length }} origens</span>
+                </div>
+                <div class="mt-4 overflow-x-auto rounded-2xl border border-slate-800/70">
+                    <table class="min-w-full divide-y divide-slate-800 text-sm">
+                        <thead class="bg-slate-950/40 text-slate-400">
+                            <tr>
+                                <th class="px-4 py-3 text-left font-medium">Origem</th>
+                                <th class="px-4 py-3 text-left font-medium">Leads</th>
+                                <th class="px-4 py-3 text-left font-medium">Convertidos</th>
+                                <th class="px-4 py-3 text-left font-medium">Taxa</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-slate-800 text-slate-200">
+                            {% for row in source_summary %}
+                                <tr class="hover:bg-slate-900/60">
+                                    <td class="px-4 py-3 font-semibold text-white">{{ row.label }}</td>
+                                    <td class="px-4 py-3">{{ row.total }}</td>
+                                    <td class="px-4 py-3">{{ row.converted }}</td>
+                                    <td class="px-4 py-3">{{ row.conversion_rate }}%</td>
+                                </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-indigo-900/20">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-xl font-semibold text-white">Distribuição por estágio</h2>
+                    <span class="text-xs text-slate-400">Total: {{ total_leads }}</span>
+                </div>
+                <div class="mt-6 space-y-4">
+                    {% for row in status_summary %}
+                        <div>
+                            <div class="flex items-center justify-between text-sm text-slate-300">
+                                <p>{{ row.label }}</p>
+                                <p class="text-white font-semibold">{{ row.total }} • {{ row.percent }}%</p>
+                            </div>
+                            <div class="mt-2 h-2 rounded-full bg-slate-800">
+                                <div class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-blue-500" style="width: {{ row.percent }}%;"></div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <p class="mt-4 text-xs text-slate-500">Dica: combine filtros de período com campanhas específicas para acompanhar evolução semanal.</p>
+            </div>
+        </div>
+    {% else %}
+        <div class="rounded-3xl border border-dashed border-slate-700 bg-slate-900/40 p-10 text-center text-slate-400">
+            <p class="text-lg font-semibold text-white">Sem dados no intervalo selecionado</p>
+            <p class="mt-2">Ajuste o filtro de datas ou cadastre novos leads para visualizar os gráficos.</p>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}
