@@ -35,3 +35,4 @@ Estas instruções refletem o que já está disponível no repositório. Ajuste-
 - Utilize `python -Wall manage.py test` antes de abrir PRs assim que testes forem adicionados.
 - Para resetar o banco em desenvolvimento, apague `db.sqlite3` e reaplique `migrate` (não faça isso em produção).
 - Sempre valide que `LANGUAGE_CODE` e `TIME_ZONE` estão coerentes com o que o PRD exige antes de subir mudanças.
+- Não versione `db.sqlite3`, ambientes virtuais ou diretórios `__pycache__`; o `.gitignore` do repositório já cobre esses artefatos.

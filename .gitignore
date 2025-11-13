@@ -1,0 +1,36 @@
+# Virtual environments
+.venv/
+venv/
+env/
+ENV/
+
+# Python cache and artifacts
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Django / SQLite
+*.sqlite3
+db.sqlite3
+*.db
+media/
+staticfiles/
+
+# Test & coverage
+.coverage
+coverage.xml
+htmlcov/
+.pytest_cache/
+
+# IDE & tooling
+.vscode/
+.idea/
+*.code-workspace
+.mypy_cache/
+ruff_cache/
+
+# OS files
+.DS_Store
+Thumbs.db
