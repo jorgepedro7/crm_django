@@ -8,6 +8,10 @@ Este diretório reúne os materiais mínimos para entender o estado atual do pro
 3. [Guidelines de código, segurança e UI](guidelines.md)
 4. [Apps Django e modelo de domínio](apps.md)
 5. [Processo, sprints e riscos](process.md)
+6. [Rotas e métodos suportados](routes.md)
+7. [Modelos e relacionamentos](models.md)
+8. [Convenções de código](conventions.md)
+9. [Guia de interface + screenshots](ui.md)
 
 ## Como usar
 - Leia os arquivos na ordem acima para percorrer do contexto geral até as tarefas pendentes.
