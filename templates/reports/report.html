@@ -1,6 +1,22 @@
 {% extends 'base.html' %}
 {% block title %}Relatórios • JL CRM{% endblock %}
 
+{% block extra_head %}
+    {{ block.super }}
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const clamp = (value, min, max) => Math.min(Math.max(value, min), max);
+            document.querySelectorAll('[data-bar-percent]').forEach((bar) => {
+                const value = parseFloat(bar.dataset.barPercent);
+                if (!Number.isFinite(value)) {
+                    return;
+                }
+                bar.style.width = clamp(value, 0, 100) + '%';
+            });
+        });
+    </script>
+{% endblock %}
+
 {% block content %}
 <section class="space-y-6">
     <header class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-indigo-900/30">
@@ -86,7 +102,7 @@
                                 <p class="text-white font-semibold">{{ row.total }} • {{ row.percent }}%</p>
                             </div>
                             <div class="mt-2 h-2 rounded-full bg-slate-800">
-                                <div class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-blue-500" style="width: {{ row.percent }}%;"></div>
+                                <div class="h-full rounded-full bg-gradient-to-r from-indigo-500 to-blue-500" data-bar-percent="{{ row.percent }}"></div>
                             </div>
                         </div>
                     {% endfor %}
