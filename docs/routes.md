@@ -31,6 +31,8 @@
 | Rota | Métodos | Autenticação | Notas |
 | --- | --- | --- | --- |
 | `/leads/` | GET | Autenticado | Lista com filtros por status/origem e busca textual. |
+| `/leads/kanban/` | GET | Autenticado | Board visual com colunas por status e drag-and-drop. |
+| `/leads/kanban/update/` | POST (AJAX) | Autenticado | Atualiza status/posição ao arrastar cards (JSON: `lead_id`, `status`, `position`). |
 | `/leads/novo/` | GET/POST | Autenticado | Criação de lead com validação de e-mail único. |
 | `/leads/<id>/editar/` | GET/POST | Autenticado | Atualização de um lead existente. |
 | `/leads/<id>/excluir/` | GET/POST | Autenticado | Confirmação de exclusão. |

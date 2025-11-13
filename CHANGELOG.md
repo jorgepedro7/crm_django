@@ -2,6 +2,10 @@
 
 # Changelog
 
+## [Sprint 10] - 2025-11-13
+- Dockerfile e `docker-compose.yml` adicionados para executar o projeto em containers com volume persistindo `db.sqlite3`.
+- Suite de testes expandida (accounts, contacts, leads, tasks, users, profiles) garantindo cobertura dos fluxos de autenticação e CRUDs principais.
+
 ## [Sprint 9] - 2025-11-13
 - Dashboard ganhou gráfico de linha mensal (leads vs. conversões) com comparação contra a meta e tabela detalhada.
 - Pipeline utiliza percentuais reais para barras/colunas.

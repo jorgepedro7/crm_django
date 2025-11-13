@@ -22,6 +22,18 @@ python manage.py createsuperuser  # crie um usuário admin (opcional)
 python manage.py runserver
 ```
 
+### Subindo com Docker
+
+```bash
+docker compose up --build
+```
+
+O serviço principal sobe em `http://localhost:8000`. O volume nomeado `sqlite_data` preserva o `db.sqlite3`. Para aplicar migrations dentro do container:
+
+```bash
+docker compose run --rm web python manage.py migrate
+```
+
 ### Comandos úteis
 
 | Objetivo | Comando |
@@ -53,7 +65,7 @@ python manage.py runserver
 
 - **users/profiles**: autenticação por e-mail e perfil criado via signal.
 - **accounts/contacts**: empresas e pessoas responsáveis por cada relacionamento.
-- **leads**: pipeline com status e ação de conversão que cria/relaciona contas e contatos.
+- **leads**: pipeline com status, conversão para contas/contatos e Kanban visual com drag-and-drop.
 - **tasks**: atividades com due date e status, exibidas no dashboard.
 - **core**: home, dashboard com gráfico mensal + metas e relatórios filtráveis/exportáveis (CSV).
 

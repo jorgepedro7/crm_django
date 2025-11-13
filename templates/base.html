@@ -33,6 +33,7 @@
                 {% if user.is_authenticated %}
                     <a href="{% url 'dashboard' %}" class="transition hover:text-white">Dashboard</a>
                     <a href="{% url 'leads:list' %}" class="transition hover:text-white">Leads</a>
+                    <a href="{% url 'leads:kanban' %}" class="transition hover:text-white">Kanban</a>
                     <a href="{% url 'accounts:list' %}" class="transition hover:text-white">Contas</a>
                     <a href="{% url 'contacts:list' %}" class="transition hover:text-white">Contatos</a>
                     <a href="{% url 'tasks:list' %}" class="transition hover:text-white">Tarefas</a>

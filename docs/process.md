@@ -32,11 +32,11 @@ Consolida o planejamento descrito no `PRD.md` para facilitar o acompanhamento do
 | Final - Docker/Testes | Dockerfile, docker-compose, cobertura de testes >70%. | Planejado, sem entregas. |
 
 ## Checklist imediato
-- [ ] Preparar ambiente Docker + docker-compose.
-- [ ] Estruturar suíte abrangente de testes (unitários + integração) visando cobertura >70%.
-- [ ] Automatizar pipeline de CI (lint, tests) para os próximos releases.
+- [ ] Automatizar pipeline de CI (lint, coverage, build Docker).
+- [ ] Planejar infraestrutura de deploy (produção/staging).
+- [ ] Documentar playbook de monitoramento/logs para o MVP.
 
 ## Pendências registradas para as sprints finais
 - Dockerização do stack (Dockerfile + docker-compose com volume do SQLite).
-- Testes unitários e de integração cobrindo autenticação, CRUDs e relatórios.
+- Testes unitários e de integração cobrindo autenticação, CRUDs e relatórios (já iniciados, mas metas de cobertura superiores podem ser exigidas em releases futuros).
 - Automatização de builds (CI) para validar Docker + testes antes do deploy.

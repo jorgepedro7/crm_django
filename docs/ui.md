@@ -21,6 +21,7 @@
 - **Inputs**: `rounded-xl border border-slate-700 bg-slate-900/60 px-4 py-3 text-slate-100 focus:ring-2`.
 - **Tabelas**: wrappers com `overflow-x-auto`, `divide-y divide-slate-800` e cabeçalhos `bg-slate-950/40`.
 - **Gráficos**: o dashboard usa `svg` com `polyline` para o gráfico de linha mensal, além de barras horizontais usando `style="width: {{ percent }}%"`.
+- **Kanban**: colunas possuem `min-w-[280px]` e `overflow-x-auto`; cards utilizam classes `rounded-2xl border border-slate-800/80 bg-slate-900/70` e SortableJS (CDN) para drag-and-drop.
 
 ## Capturas de tela
 | Tela | Arquivo |
@@ -31,6 +32,7 @@
 | Contas | `docs/screenshots/accounts.png` |
 | Contatos | `docs/screenshots/contacts.png` |
 | Leads | `docs/screenshots/leads.png` |
+| Kanban | `docs/screenshots/kanban.png` |
 | Tarefas | `docs/screenshots/tasks.png` |
 | Relatórios | `docs/screenshots/reports.png` |
 

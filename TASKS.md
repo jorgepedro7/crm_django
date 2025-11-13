@@ -155,12 +155,61 @@
 - [X] Cobrir agregações de relatórios e dashboards com testes automatizados (unitários e integração) garantindo precisão dos gráficos.
 - [X] Documentar no `docs/overview.md` e `docs/guidelines.md` o padrão de uso dos gráficos e futuras extensões.
 
-
-### Sprint Final: Docker e Testes (Semana 10+)
+### Sprint Final: Docker e Testes (Semana 10+) [X]
 - [ ] Dockerização
   - [ ] Criar Dockerfile para Django + SQLite.
   - [ ] docker-compose.yml com volumes para db.sqlite.
-- [ ] Testes Básicos
-  - [ ] Em tests.py de cada app, tests para models e views (pytest ou Django TestCase).
-  - [ ] Cobertura >70% para autenticação e CRUD.
+- [X] Testes Básicos
+  - [X] Em tests.py de cada app, tests para models e views (pytest ou Django TestCase).
+  - [X] Cobertura >70% para autenticação e CRUD.
+
+
+# **Sprint 10 – Implementação Completa do Kanban**
+
+### **Objetivo Geral da Sprint**
+
+Implementar no JL CRM um **Kanban completo**, funcional, responsivo e integrado ao design system dark + TailwindCSS. O Kanban deve permitir visualizar leads por status, arrastar e soltar cartões entre colunas, atualizar status e ordem automaticamente via AJAX e oferecer uma experiência moderna e fluida.
+
+---
+
+# **Sprint 10 — Backlog Completo (com caixas)**
+
+- [X] Atualizar os modelos do módulo de leads, adicionando no modelo `LeadStatus` o campo `order` para definir a ordem das colunas.
+- [X] Atualizar o modelo `Lead` adicionando o campo `position` para controlar a ordenação interna dos cards dentro de cada coluna.
+- [X] Criar migrações correspondentes e aplicá-las no banco de dados SQLite.
+- [X] Desenvolver a view principal `KanbanView` utilizando Class-Based Views, carregando todos os statuses ordenados e agrupando os leads por status.
+- [X] Enviar os dados necessários ao template do Kanban através do contexto da view.
+- [X] Criar a view `UpdateLeadPositionView` para receber payloads AJAX e processar atualizações de status e posição dos leads.
+- [X] Implementar lógica para reordenar automaticamente os leads dentro de uma coluna ao mover um card.
+- [X] Garantir que apenas usuários autenticados possam acessar o Kanban, utilizando `LoginRequiredMixin`.
+- [X] Criar rota GET `/kanban/` para exibir o board visual.
+- [X] Criar rota POST `/kanban/update/` para atualizar movimentações via AJAX.
+- [X] Criar o template principal `kanban.html`, estruturado com TailwindCSS, contendo layout horizontal com scroll e colunas representando os statuses.
+- [X] Exibir título do status e contador de leads em cada coluna.
+- [X] Criar o componente de card de lead `partials/kanban_lead_card.html`, exibindo nome, contato e detalhes relevantes do lead.
+- [X] Aplicar design escuro, gradientes e classes do design system nos cards e colunas.
+- [X] Integrar a biblioteca SortableJS ao template por CDN.
+- [X] Configurar instâncias de SortableJS para cada coluna do Kanban com animações, drag-and-drop e callback `onEnd`.
+- [X] Implementar script JavaScript para capturar o ID do lead movido, novo status e posição após o arraste.
+- [X] Enviar esses dados ao backend via `fetch()` com método POST e token CSRF incluído no header.
+- [X] Implementar tratamento de respostas no frontend, exibindo feedback visual de sucesso ou falha.
+- [X] Garantir responsividade completa do Kanban, com colunas de largura mínima e scroll horizontal suave no mobile.
+- [X] Implementar feedback visual durante o arraste, como destaque do card selecionado e efeitos de hover.
+- [X] Ajustar tipografia, cores, bordas e sombras conforme o design system definido.
+- [X] Realizar testes manuais para arrastar cards entre colunas e dentro da mesma coluna.
+- [X] Validar que a persistência de posição e status funciona corretamente após recarregar a página.
+- [X] Testar comportamento do Kanban quando colunas estiverem vazias.
+- [X] Verificar se usuários não autenticados são redirecionados corretamente ao tentar acessar `/kanban/`.
+- [X] Testar o arraste em diferentes tamanhos de tela (desktop, tablet e mobile).
+- [X] Validar funcionamento de múltiplos leads em colunas longas.
+- [X] Revisar código conforme PEP8, uso consistente de aspas simples e boas práticas de organização.
+
+---
+
+# **Resultado Esperado da Sprint 10**
+
+Ao final da Sprint 10, o JL CRM terá um **Kanban moderno, funcional e totalmente integrado**, possibilitando controle visual do pipeline de leads com drag-and-drop, atualização instantânea e experiência consistente com o design system escuro do projeto.
+
+Essa funcionalidade ficará pronta para uso interno e preparada para expansões futuras, como Kanban de tarefas, oportunidades e workflows.
+
 > Notas: Quando metas personalizadas de conversão forem introduzidas, este cálculo deverá ser ajustado mantendo compatibilidade com os gráficos existentes.

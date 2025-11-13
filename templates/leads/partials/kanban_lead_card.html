@@ -1,0 +1,13 @@
+<article class="rounded-2xl border border-slate-800/80 bg-slate-900/70 p-4 text-sm text-slate-200 shadow-lg shadow-black/30 transition hover:border-indigo-400/60" data-lead-id="{{ lead.id }}">
+    <div class="flex items-center justify-between">
+        <p class="font-semibold text-white">{{ lead.name }}</p>
+        <span class="rounded-full border border-slate-700 px-2 py-0.5 text-xs text-slate-400">{{ lead.get_source_display }}</span>
+    </div>
+    <p class="mt-1 text-xs text-slate-400">{{ lead.email }}</p>
+    {% if lead.account %}
+        <p class="mt-2 text-xs text-slate-400">Conta: <span class="font-semibold text-slate-100">{{ lead.account.name }}</span></p>
+    {% endif %}
+    {% if lead.contact %}
+        <p class="mt-1 text-xs text-slate-400">Contato: {{ lead.contact.name }}</p>
+    {% endif %}
+</article>

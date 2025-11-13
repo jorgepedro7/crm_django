@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% block title %}Kanban de Leads • JL CRM{% endblock %}
+
+{% block extra_head %}
+    {{ block.super }}
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" defer></script>
+{% endblock %}
+
+{% block content %}
+<section class="space-y-6">
+    <header class="rounded-3xl border border-slate-800/70 bg-slate-900/70 p-6 shadow-xl shadow-indigo-900/30">
+        <div class="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div>
+                <p class="text-xs uppercase tracking-[0.35em] text-indigo-300">Pipeline visual</p>
+                <h1 class="mt-2 text-3xl font-semibold text-white">Kanban de Leads</h1>
+                <p class="mt-1 text-sm text-slate-400">Arraste os cards entre colunas para atualizar o status em tempo real.</p>
+            </div>
+            <a href="{% url 'leads:create' %}" class="inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-indigo-500 via-blue-500 to-cyan-400 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-800/40 transition hover:opacity-90">
+                Novo lead
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 6v12m6-6H6" />
+                </svg>
+            </a>
+        </div>
+    </header>
+
+    <div id="kanban-feedback" class="hidden rounded-2xl border border-emerald-400/40 bg-emerald-500/10 px-4 py-3 text-sm text-emerald-200"></div>
+
+    <div class="flex snap-x gap-4 overflow-x-auto pb-4">
+        {% for column in kanban_columns %}
+            <div class="snap-start rounded-3xl border border-slate-800/70 bg-slate-950/50 p-4 shadow-lg shadow-black/30 min-w-[280px]" data-status-key="{{ column.status.key }}">
+                <div class="flex items-center justify-between">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.35em] text-slate-400">{{ column.status.label }}</p>
+                        <p class="text-2xl font-semibold text-white">{{ column.leads|length }}</p>
+                    </div>
+                </div>
+                <div class="mt-4 space-y-3" data-kanban-column>
+                    {% if column.leads %}
+                        {% for lead in column.leads %}
+                            {% include 'leads/partials/kanban_lead_card.html' with lead=lead %}
+                        {% endfor %}
+                    {% else %}
+                        <div class="rounded-2xl border border-dashed border-slate-800/70 bg-slate-900/50 p-4 text-center text-xs text-slate-500">
+                            Sem leads nesta coluna.
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        const feedbackEl = document.getElementById('kanban-feedback');
+        const showFeedback = (message, isError = false) => {
+            if (!feedbackEl) {
+                return;
+            }
+            feedbackEl.textContent = message;
+            feedbackEl.classList.remove('hidden');
+            feedbackEl.classList.toggle('border-emerald-400/40', !isError);
+            feedbackEl.classList.toggle('bg-emerald-500/10', !isError);
+            feedbackEl.classList.toggle('text-emerald-200', !isError);
+            feedbackEl.classList.toggle('border-rose-400/40', isError);
+            feedbackEl.classList.toggle('bg-rose-500/10', isError);
+            feedbackEl.classList.toggle('text-rose-100', isError);
+            setTimeout(() => feedbackEl.classList.add('hidden'), 3500);
+        };
+
+        const getCookie = (name) => {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i += 1) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        };
+
+        document.querySelectorAll('[data-kanban-column]').forEach((columnEl) => {
+            const columnContainer = columnEl.closest('[data-status-key]');
+            new Sortable(columnEl, {
+                group: 'jlcrm-kanban',
+                animation: 180,
+                ghostClass: 'opacity-40',
+                dragClass: 'ring-2 ring-indigo-400',
+                onEnd: (event) => {
+                    const leadId = event.item.dataset.leadId;
+                    const statusKey = event.to.closest('[data-status-key]').dataset.statusKey;
+                    const newPosition = Array.from(event.to.children).indexOf(event.item);
+                    fetch("{% url 'leads:kanban_update' %}", {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRFToken': getCookie('csrftoken'),
+                        },
+                        body: JSON.stringify({
+                            lead_id: leadId,
+                            status: statusKey,
+                            position: newPosition,
+                        }),
+                    })
+                        .then((response) => response.json())
+                        .then((data) => {
+                            if (data.success) {
+                                showFeedback('Lead atualizado com sucesso.');
+                            } else {
+                                showFeedback(data.error || 'Não foi possível atualizar o lead.', true);
+                                window.location.reload();
+                            }
+                        })
+                        .catch(() => {
+                            showFeedback('Erro ao atualizar o lead.', true);
+                            window.location.reload();
+                        });
+                },
+            });
+        });
+    });
+</script>
+{% endblock %}
