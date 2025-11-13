@@ -35,16 +35,13 @@
                         <p class="text-2xl font-semibold text-white">{{ column.leads|length }}</p>
                     </div>
                 </div>
-                <div class="mt-4 space-y-3" data-kanban-column>
-                    {% if column.leads %}
-                        {% for lead in column.leads %}
-                            {% include 'leads/partials/kanban_lead_card.html' with lead=lead %}
-                        {% endfor %}
-                    {% else %}
-                        <div class="rounded-2xl border border-dashed border-slate-800/70 bg-slate-900/50 p-4 text-center text-xs text-slate-500">
-                            Sem leads nesta coluna.
-                        </div>
-                    {% endif %}
+                <div class="mt-4 space-y-3 min-h-[220px]" data-kanban-column>
+                    <div class="rounded-2xl border border-dashed border-slate-800/70 bg-slate-900/50 p-4 text-center text-xs text-slate-500 {% if column.leads %}hidden{% endif %}" data-empty-state>
+                        Sem leads nesta coluna.
+                    </div>
+                    {% for lead in column.leads %}
+                        {% include 'leads/partials/kanban_lead_card.html' with lead=lead %}
+                    {% endfor %}
                 </div>
             </div>
         {% endfor %}
@@ -84,17 +81,38 @@
             return cookieValue;
         };
 
+        const toggleEmptyState = (columnEl) => {
+            const wrapper = columnEl.closest('[data-status-key]');
+            if (!wrapper) {
+                return;
+            }
+            const placeholder = wrapper.querySelector('[data-empty-state]');
+            if (!placeholder) {
+                return;
+            }
+            const hasCards = columnEl.querySelector('[data-lead-id]') !== null;
+            placeholder.classList.toggle('hidden', hasCards);
+        };
+
         document.querySelectorAll('[data-kanban-column]').forEach((columnEl) => {
+            toggleEmptyState(columnEl);
             const columnContainer = columnEl.closest('[data-status-key]');
             new Sortable(columnEl, {
                 group: 'jlcrm-kanban',
                 animation: 180,
                 ghostClass: 'opacity-40',
                 dragClass: 'ring-2 ring-indigo-400',
+                forceFallback: true,
+                fallbackOnBody: true,
+                fallbackClass: 'opacity-40',
+                fallbackTolerance: 4,
                 onEnd: (event) => {
+                    toggleEmptyState(event.from);
+                    toggleEmptyState(event.to);
                     const leadId = event.item.dataset.leadId;
                     const statusKey = event.to.closest('[data-status-key]').dataset.statusKey;
-                    const newPosition = Array.from(event.to.children).indexOf(event.item);
+                    const cards = Array.from(event.to.querySelectorAll('[data-lead-id]'));
+                    const newPosition = cards.indexOf(event.item);
                     fetch("{% url 'leads:kanban_update' %}", {
                         method: 'POST',
                         headers: {

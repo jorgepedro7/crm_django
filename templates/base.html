@@ -40,7 +40,10 @@
                     <a href="{% url 'reports' %}" class="transition hover:text-white">Relatórios</a>
                     <span class="hidden text-slate-500 sm:inline">|</span>
                     <span class="hidden text-sm text-slate-300 sm:inline">{{ user.email }}</span>
-                    <a href="{% url 'users:logout' %}" class="rounded-full bg-indigo-500/80 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400/80">Sair</a>
+                    <form action="{% url 'users:logout' %}" method="post" class="inline">
+                        {% csrf_token %}
+                        <button type="submit" class="rounded-full bg-indigo-500/80 px-4 py-2 text-sm font-semibold text-white transition hover:bg-indigo-400/80">Sair</button>
+                    </form>
                 {% else %}
                     <a href="{% url 'users:login' %}" class="rounded-full border border-indigo-400/60 px-4 py-2 text-sm font-semibold text-indigo-200 transition hover:bg-indigo-500/10">Entrar</a>
                     <a href="{% url 'users:signup' %}" class="rounded-full bg-gradient-to-r from-indigo-500 to-blue-500 px-4 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition hover:from-indigo-400 hover:to-blue-400">Criar conta</a>
